@@ -8,9 +8,12 @@ interface MegaMenuProps {
   isOpen: boolean;
   onClose: () => void;
   type: 'flowers' | 'gifts' | 'cakes' | 'occasion' | 'express' | 'deal';
+  onNavigate: (type: MegaMenuProps['type'], label?: string) => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
-export default function MegaMenu({ isOpen, onClose, type }: MegaMenuProps) {
+export default function MegaMenu({ isOpen, onClose, type, onNavigate, onMouseEnter, onMouseLeave }: MegaMenuProps) {
   const menuRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
@@ -79,10 +82,10 @@ export default function MegaMenu({ isOpen, onClose, type }: MegaMenuProps) {
             {
               title: 'By Price',
               links: [
-                'Below Rp 500.000',
-                'Rp 500.000 To Rp 1.000.000',
-                'Rp 1.000.000 To Rp 2.000.000',
-                'Above Rp 2.000.000',
+                'Under ₹ 5,000',
+                '₹ 5,000 to ₹ 10,000',
+                '₹ 10,000 to ₹ 20,000',
+                'Above ₹ 20,000',
               ],
             },
           ],
@@ -186,17 +189,11 @@ export default function MegaMenu({ isOpen, onClose, type }: MegaMenuProps) {
   const content = getMenuContent();
 
   return (
-    <>
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-black/5 z-40"
-        onClick={onClose}
-      />
-
-      {/* Mega Menu - User Friendly Design */}
       <div
         ref={menuRef}
         className="absolute left-0 right-0 top-full z-50"
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-6">
           <div className="bg-white rounded-xl shadow-lg border border-gray-200">
@@ -210,16 +207,16 @@ export default function MegaMenu({ isOpen, onClose, type }: MegaMenuProps) {
                     <ul className="space-y-2">
                       {section.links.map((link, linkIndex) => (
                         <li key={linkIndex}>
-                          <a
-                            href="#"
-                            className="text-sm text-gray-700 hover:text-emerald-600 transition-colors block py-1"
-                            onClick={(e) => {
-                              e.preventDefault();
+                          <button
+                            type="button"
+                            className="w-full text-left text-sm text-gray-700 hover:text-emerald-600 transition-colors block py-1"
+                            onClick={() => {
+                              onNavigate(type, link);
                               onClose();
                             }}
                           >
                             {link}
-                          </a>
+                          </button>
                         </li>
                       ))}
                     </ul>
@@ -230,7 +227,6 @@ export default function MegaMenu({ isOpen, onClose, type }: MegaMenuProps) {
           </div>
         </div>
       </div>
-    </>
   );
 }
 

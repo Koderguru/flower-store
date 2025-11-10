@@ -3,17 +3,19 @@
 import { useEffect, useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Search, ShoppingCart, User, MapPin, Menu, X, ChevronDown, Heart, Package } from 'lucide-react';
 import LocationModal from './LocationModal';
 import MegaMenu from './MegaMenu';
 import { gsap } from '@/lib/gsap';
 
 export default function Navbar() {
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
   const [cartCount, setCartCount] = useState(0);
-  const [selectedLocation, setSelectedLocation] = useState('Jakarta');
+  const [selectedLocation, setSelectedLocation] = useState('Mumbai');
 
   useEffect(() => {
     const updateCartCount = () => {
@@ -29,17 +31,58 @@ export default function Navbar() {
 
   const navRef = useRef<HTMLElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const closeMegaMenuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const navItems = [
-    { name: 'Express Delivery', href: '#', hasDropdown: true, menuType: 'express' as const },
-    { name: 'Flowers', href: '#', hasDropdown: true, menuType: 'flowers' as const },
-    { name: 'Gift Bundles', href: '#', hasDropdown: true, menuType: 'gifts' as const },
-    { name: 'Cakes / Gifts', href: '#', hasDropdown: true, menuType: 'cakes' as const },
-    { name: 'Occasion', href: '#', hasDropdown: true, menuType: 'occasion' as const },
-    { name: 'Deal Zone', href: '#', hasDropdown: true, menuType: 'deal' as const },
-    { name: 'Plants', href: '#' },
-    { name: 'Luxury Collection', href: '#' },
+    { name: 'Express Delivery', href: '/collections/express', hasDropdown: true, menuType: 'express' as const },
+    { name: 'Flowers', href: '/collections/flowers', hasDropdown: true, menuType: 'flowers' as const },
+    { name: 'Gift Bundles', href: '/collections/gifts', hasDropdown: true, menuType: 'gifts' as const },
+    { name: 'Cakes / Gifts', href: '/collections/cakes', hasDropdown: true, menuType: 'cakes' as const },
+    { name: 'Occasion', href: '/collections/occasion', hasDropdown: true, menuType: 'occasion' as const },
+    { name: 'Deal Zone', href: '/collections/deal', hasDropdown: true, menuType: 'deal' as const },
+    { name: 'Plants', href: '/collections/plants' },
+    { name: 'Luxury Collection', href: '/collections/luxury' },
   ];
+
+  const clearMegaMenuCloseTimeout = () => {
+    if (closeMegaMenuTimeoutRef.current) {
+      clearTimeout(closeMegaMenuTimeoutRef.current);
+      closeMegaMenuTimeoutRef.current = null;
+    }
+  };
+
+  const scheduleMegaMenuClose = () => {
+    clearMegaMenuCloseTimeout();
+    closeMegaMenuTimeoutRef.current = setTimeout(() => {
+      setActiveMegaMenu(null);
+    }, 150);
+  };
+
+  const handleMegaMenuEnter = (menuType: string | null) => {
+    clearMegaMenuCloseTimeout();
+    if (menuType) {
+      setActiveMegaMenu(menuType);
+    }
+  };
+
+  const handleMegaMenuLeave = () => {
+    scheduleMegaMenuClose();
+  };
+
+  const handleNavClick = (href: string) => {
+    setActiveMegaMenu(null);
+    router.push(href);
+  };
+
+  const handleMegaMenuNavigate = (type: 'flowers' | 'gifts' | 'cakes' | 'occasion' | 'express' | 'deal', label?: string) => {
+    const target = `/collections/${type}${label ? `?highlight=${encodeURIComponent(label)}` : ''}`;
+    setActiveMegaMenu(null);
+    router.push(target);
+  };
+
+  useEffect(() => {
+    return () => clearMegaMenuCloseTimeout();
+  }, []);
 
   useGSAP(
     () => {
@@ -131,10 +174,10 @@ export default function Navbar() {
             >
               <div className="flex flex-col items-start">
                 <span className="font-display text-2xl font-bold text-gray-900 tracking-tight">
-                  FLOWERS<span className="text-emerald-600">INDONESIA</span>
+                  FLOWERS<span className="text-emerald-600">INDIA</span>
                 </span>
                 <span className="text-[10px] font-medium text-gray-600 tracking-wider uppercase">
-                  Kebahagiaan Terkirim
+                  Delivering Happiness
                 </span>
               </div>
             </button>
@@ -162,7 +205,7 @@ export default function Navbar() {
             className="hidden lg:flex items-center gap-2 px-4 py-2 hover:bg-gray-50 rounded-lg transition-colors"
           >
             <User className="w-5 h-5 text-gray-700" />
-            <span className="text-sm font-medium text-gray-900">Masuk</span>
+            <span className="text-sm font-medium text-gray-900">Sign In</span>
           </Link>
 
             {/* Track Order */}
@@ -171,7 +214,7 @@ export default function Navbar() {
               className="hidden lg:flex items-center gap-2 px-4 py-2 hover:bg-gray-50 rounded-lg transition-colors"
             >
               <Package className="w-5 h-5 text-gray-700" />
-              <span className="text-sm font-medium text-gray-900">Lacak Pesanan</span>
+              <span className="text-sm font-medium text-gray-900">Track Order</span>
             </Link>
 
             {/* Cart */}
@@ -228,13 +271,25 @@ export default function Navbar() {
 
         {/* Secondary Navigation Bar */}
         <div className="hidden lg:block border-t border-gray-100 relative">
-          <div className="flex items-center justify-center gap-1 h-12">
+          <div
+            className="flex items-center justify-center gap-1 h-12"
+            onMouseLeave={handleMegaMenuLeave}
+          >
             {navItems.map((item) => (
               <button
                 key={item.name}
-                onClick={() => {
+                type="button"
+                onClick={() => handleNavClick(item.href)}
+                onMouseEnter={() => {
                   if (item.hasDropdown && item.menuType) {
-                    setActiveMegaMenu(activeMegaMenu === item.menuType ? null : item.menuType);
+                    handleMegaMenuEnter(item.menuType);
+                  } else {
+                    setActiveMegaMenu(null);
+                  }
+                }}
+                onMouseLeave={() => {
+                  if (item.hasDropdown) {
+                    handleMegaMenuLeave();
                   }
                 }}
                 className={`nav-link relative px-4 py-2 font-medium text-sm transition-colors flex items-center gap-1 ${
@@ -264,6 +319,9 @@ export default function Navbar() {
                   isOpen={activeMegaMenu === item.menuType}
                   onClose={() => setActiveMegaMenu(null)}
                   type={item.menuType}
+                  onNavigate={handleMegaMenuNavigate}
+                  onMouseEnter={() => handleMegaMenuEnter(item.menuType!)}
+                  onMouseLeave={handleMegaMenuLeave}
                 />
               )
           )}
@@ -292,7 +350,7 @@ export default function Navbar() {
             className="block px-4 py-3 rounded-lg hover:bg-emerald-50 text-gray-700 font-medium"
             onClick={() => setIsMenuOpen(false)}
           >
-            Lacak Pesanan
+            Track Order
           </Link>
         </div>
       </div>

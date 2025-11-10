@@ -128,6 +128,24 @@ export default function ProductCard({
     ? Math.round(((originalPrice - price) / originalPrice) * 100)
     : 0;
 
+  const formatPrice = (value: number) => {
+    const idrFormatter = new Intl.NumberFormat('id-ID');
+    const usdFormatter = new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+    });
+
+    const usdValue = value / 18250; // estimated conversion
+    return {
+      idr: `IND ${idrFormatter.format(value)}`,
+      usd: `${usdFormatter.format(usdValue)}`,
+    };
+  };
+
+  const formattedPrice = formatPrice(price);
+  const formattedOriginalPrice = originalPrice ? formatPrice(originalPrice) : null;
+
   return (
     <>
       <Link href={`/products/${id}`} className="product-card group block">
@@ -152,14 +170,14 @@ export default function ProductCard({
 
           {/* Badges */}
           {(badge || discount > 0) && (
-            <div className="absolute top-3 left-3 flex flex-col gap-2 z-10">
+            <div className="absolute top-3 left-3 z-20 flex flex-col items-start gap-2">
               {badge && (
-                <span className="inline-block px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-md shadow-md">
+                <span className="inline-flex min-w-[84px] justify-center px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-md shadow-md">
                   {badge}
                 </span>
               )}
               {discount > 0 && (
-                <span className="inline-block px-3 py-1 bg-emerald-500 text-white text-xs font-bold rounded-md shadow-md">
+                <span className="inline-flex min-w-[84px] justify-center px-3 py-1 bg-emerald-500 text-white text-xs font-bold rounded-md shadow-md">
                   {discount}% OFF
                 </span>
               )}
@@ -238,17 +256,15 @@ export default function ProductCard({
           )}
 
           {/* Price Section */}
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <span className="text-xl font-bold text-gray-900">
-                Rp {price.toLocaleString()}
+          <div className="mb-3 space-y-1">
+            <span className="block text-sm font-semibold text-gray-900 uppercase tracking-[0.25em]">
+              {formattedPrice.idr} / {formattedPrice.usd}
+            </span>
+            {formattedOriginalPrice && (
+              <span className="block text-xs text-gray-400 line-through">
+                {formattedOriginalPrice.idr} / {formattedOriginalPrice.usd}
               </span>
-              {originalPrice && (
-                <span className="text-sm text-gray-400 line-through">
-                  Rp {originalPrice.toLocaleString()}
-                </span>
-              )}
-            </div>
+            )}
           </div>
 
           {/* Add to Cart Button */}

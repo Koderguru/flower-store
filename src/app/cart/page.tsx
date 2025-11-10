@@ -1,10 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft, CreditCard } from 'lucide-react';
+import { products, type Product } from '@/data/products';
 
 interface CartItem {
   id: string;
@@ -18,6 +19,10 @@ interface CartItem {
 export default function CartPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const router = useRouter();
+  const [couponCode, setCouponCode] = useState('');
+  const [discountPercent, setDiscountPercent] = useState(0);
+  const [couponMessage, setCouponMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [cartNotice, setCartNotice] = useState<string | null>(null);
 
   useEffect(() => {
     loadCart();
@@ -52,7 +57,74 @@ export default function CartPage() {
     window.dispatchEvent(new Event('cartUpdated'));
   };
 
-  const total = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = useMemo(
+    () => cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    [cartItems]
+  );
+  const discountAmount = useMemo(
+    () => Math.round((subtotal * discountPercent) / 100),
+    [subtotal, discountPercent]
+  );
+  const total = Math.max(subtotal - discountAmount, 0);
+
+  const handleApplyCoupon = () => {
+    const code = couponCode.trim().toUpperCase();
+
+    if (!code) {
+      setCouponMessage({ type: 'error', text: 'Please enter a coupon code to apply.' });
+      return;
+    }
+
+    if (code === 'BLOOM10') {
+      setDiscountPercent(10);
+      setCouponMessage({ type: 'success', text: 'Coupon applied! You saved 10% on your order.' });
+    } else if (code === 'FIRSTFLOWER15') {
+      setDiscountPercent(15);
+      setCouponMessage({ type: 'success', text: 'Amazing! Enjoy a 15% discount on this order.' });
+    } else {
+      setDiscountPercent(0);
+      setCouponMessage({ type: 'error', text: 'Sorry, that coupon code is not valid.' });
+    }
+  };
+
+  const handleRemoveCoupon = () => {
+    setDiscountPercent(0);
+    setCouponMessage({ type: 'success', text: 'Coupon removed. You can try another code anytime!' });
+  };
+
+  const recommendedProducts = useMemo(() => {
+    const cartIds = new Set(cartItems.map((item) => item.id));
+    return products.filter((product) => !cartIds.has(product.id)).slice(0, 4);
+  }, [cartItems]);
+
+  const handleAddRecommended = (product: Product) => {
+    const existingItem = cartItems.find((item) => item.id === product.id);
+    let updatedCart: CartItem[];
+
+    if (existingItem) {
+      updatedCart = cartItems.map((item) =>
+        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+      );
+    } else {
+      updatedCart = [
+        ...cartItems,
+        {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          quantity: 1,
+        },
+      ];
+    }
+
+    setCartItems(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    window.dispatchEvent(new Event('cartUpdated'));
+    setCartNotice(`${product.name} was added to your cart.`);
+
+    setTimeout(() => setCartNotice(null), 3000);
+  };
 
   if (cartItems.length === 0) {
     return (
@@ -91,6 +163,12 @@ export default function CartPage() {
           <p className="text-gray-600 mt-2">{cartItems.length} items in your cart</p>
         </div>
 
+        {cartNotice && (
+          <div className="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            {cartNotice}
+          </div>
+        )}
+
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
@@ -124,7 +202,7 @@ export default function CartPage() {
                       </p>
                     )}
                     <p className="text-lg font-bold text-gray-900 mt-2">
-                      Rp {item.price.toLocaleString()}
+                      ₹ {item.price.toLocaleString('en-IN')}
                     </p>
 
                     {/* Quantity Controls */}
@@ -158,12 +236,51 @@ export default function CartPage() {
                   <div className="text-right">
                     <p className="text-sm text-gray-500">Subtotal</p>
                     <p className="text-xl font-bold text-gray-900">
-                      Rp {(item.price * item.quantity).toLocaleString()}
+                      ₹ {(item.price * item.quantity).toLocaleString('en-IN')}
                     </p>
                   </div>
                 </div>
               </div>
             ))}
+
+            {recommendedProducts.length > 0 && (
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-semibold text-gray-900">You may also love</h2>
+                  <span className="text-sm text-gray-500">Handpicked picks inspired by your cart</span>
+                </div>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-4">
+                  {recommendedProducts.map((product) => (
+                    <div
+                      key={product.id}
+                      className="rounded-lg border border-gray-100 p-4 hover:shadow-md transition-shadow flex flex-col"
+                    >
+                      <div className="relative w-full aspect-square rounded-lg overflow-hidden bg-gray-100 mb-4">
+                        <Image
+                          src={product.image || '/file.svg'}
+                          alt={product.name}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <h3 className="text-sm font-semibold text-gray-900 line-clamp-2 flex-1">
+                        {product.name}
+                      </h3>
+                      <p className="text-base font-bold text-gray-900 mt-2">
+                        ₹ {product.price.toLocaleString('en-IN')}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => handleAddRecommended(product)}
+                        className="mt-4 inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-emerald-700"
+                      >
+                        Add to Cart
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Order Summary */}
@@ -171,18 +288,62 @@ export default function CartPage() {
             <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 sticky top-24">
               <h2 className="text-xl font-bold text-gray-900 mb-6">Order Summary</h2>
 
+              <div className="mb-6">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Have a coupon?</label>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <input
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value)}
+                    placeholder="Enter code e.g. BLOOM10"
+                    className="flex-1 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
+                  />
+                  {discountPercent > 0 ? (
+                    <button
+                      type="button"
+                      onClick={handleRemoveCoupon}
+                      className="px-4 py-3 rounded-lg border border-red-200 text-red-600 font-semibold hover:bg-red-50 transition-colors"
+                    >
+                      Remove
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={handleApplyCoupon}
+                      className="px-4 py-3 rounded-lg bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-colors"
+                    >
+                      Apply
+                    </button>
+                  )}
+                </div>
+                {couponMessage && (
+                  <p
+                    className={`mt-2 text-sm ${
+                      couponMessage.type === 'success' ? 'text-emerald-600' : 'text-red-600'
+                    }`}
+                  >
+                    {couponMessage.text}
+                  </p>
+                )}
+              </div>
+
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-gray-600">
                   <span>Subtotal</span>
-                  <span>Rp {total.toLocaleString()}</span>
+                  <span>₹ {subtotal.toLocaleString('en-IN')}</span>
                 </div>
+                {discountPercent > 0 && (
+                  <div className="flex justify-between text-emerald-600">
+                    <span>Discount ({discountPercent}%)</span>
+                    <span>-₹ {discountAmount.toLocaleString('en-IN')}</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-gray-600">
                   <span>Delivery</span>
                   <span className="text-emerald-600 font-semibold">FREE</span>
                 </div>
                 <div className="border-t border-gray-200 pt-3 flex justify-between text-lg font-bold text-gray-900">
                   <span>Total</span>
-                  <span>Rp {total.toLocaleString()}</span>
+                  <span>₹ {total.toLocaleString('en-IN')}</span>
                 </div>
               </div>
 
@@ -195,7 +356,7 @@ export default function CartPage() {
               </button>
 
               <p className="text-xs text-gray-500 text-center mt-4">
-                Free delivery on orders above Rp 1.000.000
+                Free delivery on orders above ₹ 10,000. Express upgrades available at checkout.
               </p>
             </div>
           </div>

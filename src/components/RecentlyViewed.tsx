@@ -36,14 +36,17 @@ export default function RecentlyViewed() {
       {/* Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed right-0 top-1/2 -translate-y-1/2 bg-emerald-600 text-white px-3 py-6 rounded-l-xl shadow-lg hover:bg-emerald-700 transition-all z-40 flex items-center gap-2"
+        className="fixed right-4 bottom-24 sm:bottom-20 md:bottom-24 bg-emerald-600 text-white px-4 py-3 rounded-full shadow-lg hover:bg-emerald-700 transition-all z-40 flex items-center gap-2"
+        aria-expanded={isOpen}
+        aria-controls="recently-viewed-panel"
       >
         <Clock className="w-5 h-5" />
-        <span className="text-sm font-semibold writing-mode-vertical">Recently Viewed</span>
+        <span className="text-sm font-semibold">Recently Viewed</span>
       </button>
 
       {/* Sidebar Panel */}
       <div
+        id="recently-viewed-panel"
         className={`fixed right-0 top-0 h-full w-80 bg-white shadow-2xl z-50 transform transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
@@ -90,7 +93,7 @@ export default function RecentlyViewed() {
                         {item.name}
                       </h4>
                       <p className="text-sm font-bold text-gray-900 mt-1">
-                        Rp {item.price.toLocaleString()}
+                        ₹ {item.price.toLocaleString('en-IN')}
                       </p>
                     </div>
                   </div>

@@ -15,6 +15,11 @@ export default function ProductDetailSheet({ product }: ProductDetailSheetProps)
   const [selectedCity, setSelectedCity] = useState('');
   const [showCityDropdown, setShowCityDropdown] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
+  const [openSections, setOpenSections] = useState({
+    description: true,
+    care: false,
+    delivery: false,
+  });
 
   const variants = {
     classic: {
@@ -37,9 +42,27 @@ export default function ProductDetailSheet({ product }: ProductDetailSheetProps)
     },
   };
 
-  const cities = ['Jakarta', 'Surabaya', 'Bandung', 'Medan', 'Semarang', 'Makassar'];
+  const cities = ['Mumbai', 'Delhi NCR', 'Bengaluru', 'Hyderabad', 'Chennai', 'Kolkata'];
 
   const currentVariant = variants[selectedVariant];
+
+  const careGuide = [
+    'Trim the stems by 1 inch and place in fresh, room-temperature water.',
+    'Refresh water and flower food every 24 hours to keep blooms perky.',
+    'Display away from direct sunlight, ceiling fans, or heating vents.',
+  ];
+
+  const deliveryNotes = product.deliveryInfo
+    ? [product.deliveryInfo]
+    : [
+        'Same-day delivery available across major metro cities.',
+        'Our chilled courier partners ensure every bouquet arrives fresh.',
+        'Real-time tracking and delivery OTP confirmation for every order.',
+      ];
+  const toggleSection = (section: 'description' | 'care' | 'delivery') => {
+    setOpenSections((prev) => ({ ...prev, [section]: !prev[section] }));
+  };
+
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -134,7 +157,7 @@ export default function ProductDetailSheet({ product }: ProductDetailSheetProps)
         <div>
           <div className="flex items-center gap-2 mb-2">
             <span className="text-3xl font-bold text-gray-900">
-              Rp {currentVariant.price.toLocaleString()}
+              ₹ {currentVariant.price.toLocaleString('en-IN')}
             </span>
             <div className="flex items-center gap-1">
               {[...Array(5)].map((_, i) => (
@@ -181,7 +204,7 @@ export default function ProductDetailSheet({ product }: ProductDetailSheetProps)
                       {variant.name}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-600">Rp {variant.price.toLocaleString()}</p>
+                  <p className="text-xs text-gray-600">₹ {variant.price.toLocaleString('en-IN')}</p>
                   <p className="text-xs text-gray-500 mt-1">{variant.description}</p>
                 </button>
               );
@@ -196,7 +219,7 @@ export default function ProductDetailSheet({ product }: ProductDetailSheetProps)
             <span className="text-sm text-gray-700">Arrange in Glass Vase</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-gray-900">Rp 200</span>
+            <span className="text-sm font-semibold text-gray-900">₹ 200</span>
             <label className="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" className="sr-only peer" />
               <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
@@ -265,29 +288,93 @@ export default function ProductDetailSheet({ product }: ProductDetailSheetProps)
         {/* Tabs */}
         <div className="border-t border-gray-200 pt-6">
           <div className="space-y-4">
-            <button className="w-full flex items-center justify-between py-3 border-b border-gray-200">
-              <span className="font-semibold text-gray-900">Description</span>
-              <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-            <div className="text-sm text-gray-600 leading-relaxed">
-              <p>{product.description}</p>
+            <div>
+              <button
+                type="button"
+                onClick={() => toggleSection('description')}
+                className="w-full flex items-center justify-between py-3 border-b border-gray-200"
+              >
+                <span className="font-semibold text-gray-900">Description</span>
+                <svg
+                  className={`w-5 h-5 text-gray-600 transition-transform ${
+                    openSections.description ? 'rotate-180' : ''
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {openSections.description && (
+                <div className="pt-3 text-sm text-gray-600 leading-relaxed space-y-3">
+                  <p>{product.description}</p>
+                  {product.composition && product.composition.length > 0 && (
+                    <ul className="list-disc pl-5 space-y-2">
+                      {product.composition.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
             </div>
 
-            <button className="w-full flex items-center justify-between py-3 border-b border-gray-200">
-              <span className="font-semibold text-gray-900">Care Guide</span>
-              <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
+            <div>
+              <button
+                type="button"
+                onClick={() => toggleSection('care')}
+                className="w-full flex items-center justify-between py-3 border-b border-gray-200"
+              >
+                <span className="font-semibold text-gray-900">Care Guide</span>
+                <svg
+                  className={`w-5 h-5 text-gray-600 transition-transform ${
+                    openSections.care ? 'rotate-180' : ''
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {openSections.care && (
+                <div className="pt-3 text-sm text-gray-600">
+                  <ul className="list-disc pl-5 space-y-2">
+                    {careGuide.map((tip) => (
+                      <li key={tip}>{tip}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
 
-            <button className="w-full flex items-center justify-between py-3 border-b border-gray-200">
-              <span className="font-semibold text-gray-900">Delivery Information</span>
-              <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
+            <div>
+              <button
+                type="button"
+                onClick={() => toggleSection('delivery')}
+                className="w-full flex items-center justify-between py-3 border-b border-gray-200"
+              >
+                <span className="font-semibold text-gray-900">Delivery Information</span>
+                <svg
+                  className={`w-5 h-5 text-gray-600 transition-transform ${
+                    openSections.delivery ? 'rotate-180' : ''
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              {openSections.delivery && (
+                <div className="pt-3 text-sm text-gray-600 space-y-2">
+                  {deliveryNotes.map((note) => (
+                    <p key={note}>{note}</p>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -334,7 +421,7 @@ export default function ProductDetailSheet({ product }: ProductDetailSheetProps)
                 )}
                 {relatedProduct.originalPrice && (
                   <div className="absolute top-3 right-3 bg-emerald-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
-                    Save Rp {(relatedProduct.originalPrice - relatedProduct.price).toLocaleString()}
+                    Save ₹ {(relatedProduct.originalPrice - relatedProduct.price).toLocaleString('en-IN')}
                   </div>
                 )}
               </div>
@@ -358,11 +445,11 @@ export default function ProductDetailSheet({ product }: ProductDetailSheetProps)
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-lg font-bold text-gray-900">
-                    Rp {relatedProduct.price.toLocaleString()}
+                    ₹ {relatedProduct.price.toLocaleString('en-IN')}
                   </span>
                   {relatedProduct.originalPrice && (
                     <span className="text-sm text-gray-400 line-through">
-                      Rp {relatedProduct.originalPrice.toLocaleString()}
+                      ₹ {relatedProduct.originalPrice.toLocaleString('en-IN')}
                     </span>
                   )}
                 </div>

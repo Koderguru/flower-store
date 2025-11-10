@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { Instagram, Facebook, Twitter, Mail, Heart, Youtube, Linkedin, Send } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { useGSAP } from '@gsap/react';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 
@@ -9,19 +9,11 @@ export default function Footer() {
   const [email, setEmail] = useState('');
 
   const footerLinks = {
-    'FLOWERSINDONESIA': ['About Us', 'Delivery Information', 'Privacy Policy', 'Terms & Conditions', 'Contact Us'],
+    'FLOWERSINDIA': ['About Us', 'Delivery Information', 'Privacy Policy', 'Terms & Conditions', 'Contact Us'],
     'Categories': ['Flowers', 'Cakes', 'Plants', 'Gifts', 'Combos', 'Chocolates'],
     'Occasions': ['Birthday', 'Anniversary', 'Wedding', 'Valentine', 'Mother\'s Day', 'Congratulations'],
     'Other Links': ['Corporate Gifts', 'Franchise', 'Careers', 'Blog', 'Customer Care'],
   };
-
-  const socialLinks = [
-    { icon: Facebook, href: '#', label: 'Facebook' },
-    { icon: Instagram, href: '#', label: 'Instagram' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Youtube, href: '#', label: 'Youtube' },
-    { icon: Linkedin, href: '#', label: 'LinkedIn' },
-  ];
 
   const footerRef = useRef<HTMLElement>(null);
 
@@ -42,20 +34,6 @@ export default function Footer() {
         });
       });
 
-      const icons = gsap.utils.toArray<HTMLElement>('.footer-social');
-      ScrollTrigger.create({
-        trigger: footerRef.current,
-        start: 'top 95%',
-        onEnter: () => {
-          gsap.from(icons, {
-            opacity: 0,
-            y: 12,
-            duration: 0.4,
-            stagger: 0.08,
-            ease: 'power1.out',
-          });
-        },
-      });
     },
     { scope: footerRef }
   );
@@ -106,7 +84,7 @@ export default function Footer() {
         <div className="mb-12">
           <div className="flex flex-col items-center text-center mb-6">
             <h2 className="font-display text-3xl font-bold text-gray-900 mb-2">
-              FLOWERSINDONESIA            </h2>
+              FLOWERSINDIA            </h2>
             <p className="text-gray-600 max-w-2xl">
               India's leading online gifting platform, delivering happiness across 600+ cities. 
               Fresh flowers, delicious cakes, and thoughtful gifts for every occasion.
@@ -135,35 +113,12 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Payment & Social */}
+        {/* Footer Bottom */}
         <div className="border-t border-gray-200 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            {/* Social Links */}
-            <div className="flex items-center gap-4">
-              {socialLinks.map(({ icon: Icon, href, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  className="footer-social w-10 h-10 rounded-full bg-gray-100 hover:bg-emerald-600 hover:text-white flex items-center justify-center transition-all"
-                  aria-label={label}
-                >
-                  <Icon className="w-5 h-5" />
-                </a>
-              ))}
-            </div>
-
-            {/* App Store Badges */}
-            <div className="flex items-center gap-4">
-              <button className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors">
-                Download App
-              </button>
-            </div>
-          </div>
-
           {/* Copyright */}
           <div className="mt-8 pt-6 border-t border-gray-200">
             <p className="text-center text-gray-500 text-sm">
-              © 2024 FLOWERSINDONESIA. All rights reserved. | Delivering Happiness Since 2007
+              © 2024 FLOWERSINDIA. All rights reserved. | Delivering Happiness Since 2007
             </p>
           </div>
         </div>

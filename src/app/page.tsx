@@ -31,9 +31,9 @@ export default function Home() {
   ];
 
   const heroMetrics = [
-    { value: '12k+', label: 'Pesanan same-day', icon: Clock4 },
-    { value: '180+', label: 'Kota jangkauan', icon: MapPin },
-    { value: '4.9', label: 'Rating pelanggan', icon: ShieldCheck },
+    { value: '12k+', label: 'Same-day orders', icon: Clock4 },
+    { value: '180+', label: 'Cities served', icon: MapPin },
+    { value: '4.9', label: 'Customer rating', icon: ShieldCheck },
   ];
 
   const promotionalBanners = [

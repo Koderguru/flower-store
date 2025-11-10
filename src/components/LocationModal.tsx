@@ -18,31 +18,31 @@ export default function LocationModal({ isOpen, onClose, onSelectLocation }: Loc
 
   const popularCities = useMemo(
     () => [
-      { name: 'Jakarta Selatan', region: 'DKI Jakarta', eta: 'Pengantaran 2 jam' },
-      { name: 'Jakarta Barat', region: 'DKI Jakarta', eta: 'Pengantaran 2 jam' },
-      { name: 'Surabaya Pusat', region: 'Jawa Timur', eta: 'Pengantaran 3 jam' },
-      { name: 'Bandung Utara', region: 'Jawa Barat', eta: 'Pengantaran 4 jam' },
-      { name: 'Yogyakarta', region: 'DI Yogyakarta', eta: 'Pengantaran 1 hari' },
-      { name: 'Denpasar', region: 'Bali', eta: 'Pengantaran 1 hari' },
-      { name: 'Semarang', region: 'Jawa Tengah', eta: 'Pengantaran 1 hari' },
-      { name: 'Medan Kota', region: 'Sumatera Utara', eta: 'Pengantaran 2 hari' },
-      { name: 'Makassar', region: 'Sulawesi Selatan', eta: 'Pengantaran 2 hari' },
-      { name: 'Balikpapan', region: 'Kalimantan Timur', eta: 'Pengantaran 2 hari' },
-      { name: 'Batam', region: 'Kepulauan Riau', eta: 'Pengantaran 2 hari' },
-      { name: 'Bogor', region: 'Jawa Barat', eta: 'Pengantaran 1 hari' },
+      { name: 'South Mumbai', region: 'Maharashtra', eta: 'Delivered within 2 hours' },
+      { name: 'Bandra West', region: 'Maharashtra', eta: 'Delivered within 3 hours' },
+      { name: 'South Delhi', region: 'Delhi NCR', eta: 'Delivered within 2 hours' },
+      { name: 'Gurugram Central', region: 'Delhi NCR', eta: 'Delivered within 3 hours' },
+      { name: 'Indiranagar', region: 'Karnataka', eta: 'Delivered within 3 hours' },
+      { name: 'Whitefield', region: 'Karnataka', eta: 'Delivered within 4 hours' },
+      { name: 'Jubilee Hills', region: 'Telangana', eta: 'Delivered within 1 day' },
+      { name: 'Kondapur', region: 'Telangana', eta: 'Delivered within 1 day' },
+      { name: 'Salt Lake', region: 'West Bengal', eta: 'Delivered within 1 day' },
+      { name: 'Alwarpet', region: 'Tamil Nadu', eta: 'Delivered within 2 days' },
+      { name: 'Fort Kochi', region: 'Kerala', eta: 'Delivered within 2 days' },
+      { name: 'Sector 17, Chandigarh', region: 'Chandigarh', eta: 'Delivered within 2 days' },
     ],
     []
   );
 
   const curatedRegions = useMemo(
     () => [
-      'DKI Jakarta',
-      'Jawa Barat',
-      'Jawa Tengah',
-      'Jawa Timur',
-      'Bali',
-      'Sumatera Utara',
-      'Sulawesi Selatan',
+      'Delhi NCR',
+      'Maharashtra',
+      'Karnataka',
+      'Tamil Nadu',
+      'Telangana',
+      'West Bengal',
+      'Kerala',
     ],
     []
   );
@@ -108,12 +108,12 @@ export default function LocationModal({ isOpen, onClose, onSelectLocation }: Loc
               <Globe2 className="w-5 h-5" />
             </div>
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-emerald-500 mb-1">Pilih Lokasi</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.35em] text-emerald-500 mb-1">Choose Location</p>
               <h3 className="font-display text-xl font-semibold text-gray-900 leading-snug">
-                Kirim Bunga ke Seluruh Indonesia
+                Deliver Flowers Across Indonesia
               </h3>
               <p className="text-sm text-gray-500 mt-1">
-                Tentukan area pengiriman untuk melihat ketersediaan stok dan estimasi waktu tiba.
+                Select your delivery area to check availability and estimated arrival time.
               </p>
             </div>
           </div>
@@ -155,14 +155,14 @@ export default function LocationModal({ isOpen, onClose, onSelectLocation }: Loc
             }}
           >
             <Navigation className="w-4 h-4" />
-            Gunakan Lokasi Saat Ini
+            Use Current Location
           </button>
 
           <div className="relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-400 w-4 h-4" />
             <input
               type="text"
-              placeholder="Cari kota atau kecamatan..."
+              placeholder="Search city or district..."
               value={searchLocation}
               onChange={(e) => setSearchLocation(e.target.value)}
               className="w-full pl-11 pr-4 py-3 rounded-xl border border-emerald-100 focus:outline-none focus:border-emerald-300 bg-white text-sm shadow-inner"
@@ -172,10 +172,10 @@ export default function LocationModal({ isOpen, onClose, onSelectLocation }: Loc
           <div>
             <div className="flex items-center justify-between mb-3">
               <h4 className="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-500">
-                Area Populer
+                Popular Areas
               </h4>
               <span className="text-[11px] text-gray-400 uppercase tracking-[0.3em]">
-                Estimasi tiba
+                ETA
               </span>
             </div>
             <div ref={itemsContainerRef} className="space-y-1.5 max-h-56 overflow-y-auto pr-1">

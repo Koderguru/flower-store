@@ -9,8 +9,8 @@ import { Mail, Lock, LogIn, Sparkles, ArrowLeft, Shield, LogOut, Home } from 'lu
 import Link from 'next/link';
 
 const GUEST_USER = {
-  name: 'Tamu Flowers',
-  email: 'guest@flowersindonesia.id',
+  name: 'Bloom Guest',
+  email: 'guest@flowersindia.in',
   role: 'guest',
 };
 
@@ -58,11 +58,11 @@ export default function LoginPage() {
       await new Promise((resolve) => setTimeout(resolve, 700));
 
       if (!email || !password) {
-        throw new Error('Mohon masukkan email dan kata sandi.');
+        throw new Error('Please enter both email and password.');
       }
 
       const mockUser = {
-        name: email.split('@')[0] || 'Pengguna',
+        name: email.split('@')[0] || 'Guest',
         email,
         role: 'member',
       };
@@ -72,7 +72,7 @@ export default function LoginPage() {
       window.dispatchEvent(new Event('userUpdated'));
       router.replace('/');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Terjadi kesalahan. Coba lagi.');
+      setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -88,7 +88,7 @@ export default function LoginPage() {
       window.dispatchEvent(new Event('userUpdated'));
       router.replace('/');
     } catch {
-      setError('Gagal masuk sebagai tamu. Coba lagi.');
+      setError('Unable to sign in as guest. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -115,7 +115,7 @@ export default function LoginPage() {
           className="inline-flex items-center gap-2 text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors mb-8 login-card"
         >
           <ArrowLeft className="w-4 h-4" />
-          Kembali ke beranda
+          Back to Home
         </Link>
 
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center" id={containerId}>
@@ -130,20 +130,20 @@ export default function LoginPage() {
                   </span>
                   <div>
                     <h1 className="text-3xl font-display font-bold text-gray-900 leading-tight">
-                      Selamat datang kembali
+                      Welcome back
                     </h1>
                     <p className="text-sm text-gray-600 mt-1">
-                      Kelola pesanan bunga Anda dengan dashboard FLOWERSINDONESIA.
+                      Manage every bouquet from your FLOWERSINDIA dashboard.
                     </p>
                   </div>
                 </div>
 
                 <div className="rounded-2xl bg-white/70 backdrop-blur-sm border border-emerald-100/70 p-6 mb-8">
                   <h2 className="text-lg font-semibold text-gray-900">
-                    Masuk sebagai tamu
+                    Continue as a guest
                   </h2>
                   <p className="text-sm text-gray-600 mt-1">
-                    Tidak perlu membuat akun. Klik tombol berikut untuk masuk cepat dan jelajahi koleksi premium kami.
+                    No account required—jump in instantly and explore our premium curation.
                   </p>
                   <button
                     onClick={handleGuestLogin}
@@ -151,7 +151,7 @@ export default function LoginPage() {
                     className="mt-4 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold transition-colors shadow-md disabled:opacity-70"
                   >
                     <LogIn className="w-4 h-4" />
-                    Masuk sebagai Tamu
+                    Continue as Guest
                   </button>
                 </div>
 
@@ -176,13 +176,13 @@ export default function LoginPage() {
                 <div className="mb-8 rounded-2xl border border-emerald-100 bg-emerald-50/80 p-5 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div className="space-y-1">
                     <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-600">
-                      Anda sudah masuk
+                      You are signed in
                     </p>
                     <h3 className="text-lg font-display font-bold text-gray-900">
-                      Halo, {existingUser.name || 'Pengguna'}!
+                      Hello, {existingUser.name || 'Friend'}!
                     </h3>
                     <p className="text-sm text-gray-600">
-                      Lanjutkan menggunakan akun ini atau keluar untuk masuk dengan akun lain.
+                      Continue with this account or sign out to switch profiles.
                     </p>
                   </div>
                   <div className="flex gap-3">
@@ -191,14 +191,14 @@ export default function LoginPage() {
                       className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-emerald-700"
                     >
                       <Home className="w-4 h-4" />
-                      Lanjutkan
+                      Continue
                     </button>
                     <button
                       onClick={handleLogout}
                       className="inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-semibold text-gray-700 transition-colors hover:border-gray-300"
                     >
                       <LogOut className="w-4 h-4" />
-                      Keluar
+                      Sign Out
                     </button>
                   </div>
                 </div>
@@ -207,13 +207,13 @@ export default function LoginPage() {
               <div className="space-y-2 mb-8">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold uppercase tracking-wide">
                   <Shield className="w-4 h-4" />
-                  Akun Member
+                  Member Account
                 </div>
                 <h2 className="text-3xl font-display font-bold text-gray-900">
-                  Masuk ke akun Anda
+                  Sign in to your account
                 </h2>
                 <p className="text-sm text-gray-600">
-                  Akses riwayat pesanan, wishlist, dan rekomendasi personal.
+                  Access order history, wishlist, and tailored recommendations.
                 </p>
               </div>
 
@@ -228,7 +228,7 @@ export default function LoginPage() {
                       type="email"
                       value={email}
                       onChange={(event) => setEmail(event.target.value)}
-                      placeholder="nama@flowersindonesia.id"
+                      placeholder="name@flowersindia.in"
                       className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition"
                       required
                     />
@@ -237,7 +237,7 @@ export default function LoginPage() {
 
                 <div>
                   <label className="text-sm font-semibold text-gray-700 mb-2 block">
-                    Kata sandi
+                    Password
                   </label>
                   <div className="relative">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-500" />
@@ -245,7 +245,7 @@ export default function LoginPage() {
                       type="password"
                       value={password}
                       onChange={(event) => setPassword(event.target.value)}
-                      placeholder="Masukkan kata sandi"
+                      placeholder="Enter your password"
                       className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400 transition"
                       required
                     />
@@ -255,7 +255,7 @@ export default function LoginPage() {
                       type="button"
                       className="text-xs font-semibold text-emerald-600 hover:text-emerald-700 mt-2"
                     >
-                      Lupa kata sandi?
+                      Forgot password?
                     </button>
                   </div>
                 </div>
@@ -274,18 +274,18 @@ export default function LoginPage() {
                   {isLoading ? (
                     <>
                       <span className="h-5 w-5 rounded-full border-2 border-white/60 border-t-white animate-spin" />
-                      Sedang memproses...
+                      Processing...
                     </>
                   ) : (
                     <>
                       <LogIn className="w-5 h-5" />
-                      Masuk
+                      Sign In
                     </>
                   )}
                 </button>
 
                 <p className="text-xs text-gray-500 text-center">
-                  Dengan masuk, Anda menyetujui <span className="text-emerald-600 font-semibold">Kebijakan Privasi</span> dan <span className="text-emerald-600 font-semibold">Syarat & Ketentuan</span> kami.
+                  By signing in, you agree to our <span className="text-emerald-600 font-semibold">Privacy Policy</span> and <span className="text-emerald-600 font-semibold">Terms & Conditions</span>.
                 </p>
               </form>
             </div>
