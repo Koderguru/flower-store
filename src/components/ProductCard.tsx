@@ -31,9 +31,12 @@ export default function ProductCard({
   image = '/file.svg',
 }: ProductCardProps) {
   const [isLiked, setIsLiked] = useState(false);
+  const [likeAnimating, setLikeAnimating] = useState(false);
+  const [showLikeBurst, setShowLikeBurst] = useState(false);
   const [isAdded, setIsAdded] = useState(false);
   const [showLottie, setShowLottie] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -45,6 +48,47 @@ export default function ProductCard({
     const timer = setTimeout(() => setShowLottie(false), 2000);
     return () => clearTimeout(timer);
   }, [showLottie]);
+
+  const likeAnimationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const likeBurstTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (likeAnimationTimeoutRef.current) {
+        clearTimeout(likeAnimationTimeoutRef.current);
+      }
+      if (likeBurstTimeoutRef.current) {
+        clearTimeout(likeBurstTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleToggleLike = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsLiked((prev) => {
+      const next = !prev;
+      if (next) {
+        setShowLikeBurst(true);
+        if (likeBurstTimeoutRef.current) {
+          clearTimeout(likeBurstTimeoutRef.current);
+        }
+        likeBurstTimeoutRef.current = setTimeout(() => {
+          setShowLikeBurst(false);
+        }, 900);
+      } else {
+        setShowLikeBurst(false);
+      }
+      return next;
+    });
+    setLikeAnimating(true);
+    if (likeAnimationTimeoutRef.current) {
+      clearTimeout(likeAnimationTimeoutRef.current);
+    }
+    likeAnimationTimeoutRef.current = setTimeout(() => {
+      setLikeAnimating(false);
+    }, 520);
+  };
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -76,7 +120,6 @@ export default function ProductCard({
     
     setIsAdded(true);
     setShowLottie(true);
-    
     // Dispatch custom event for cart update
     window.dispatchEvent(new Event('cartUpdated'));
   };
@@ -88,7 +131,12 @@ export default function ProductCard({
   return (
     <>
       <Link href={`/products/${id}`} className="product-card group block">
-        <div className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
+        <div
+          ref={cardRef}
+          className={`relative bg-white rounded-xl overflow-hidden shadow-sm transition-all duration-300 transform ${
+            isLiked ? 'shadow-xl shadow-rose-200/70 scale-[1.01]' : ''
+          } ${likeAnimating ? 'scale-[1.02]' : ''} hover:shadow-xl`}
+        >
         {/* Image Section */}
         <div className="relative aspect-square overflow-hidden bg-gray-50">
           <Image
@@ -119,21 +167,40 @@ export default function ProductCard({
           )}
 
           {/* Like Button */}
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setIsLiked(!isLiked);
-            }}
-            className="absolute top-3 right-3 w-10 h-10 rounded-full bg-white/95 backdrop-blur flex items-center justify-center shadow-md hover:bg-white hover:scale-110 transition-all z-10"
-            aria-label="Add to wishlist"
-          >
-            <Heart
-              className={`w-5 h-5 transition-colors ${
-                isLiked ? 'fill-red-500 text-red-500' : 'text-gray-600'
-              }`}
-            />
-          </button>
+          <div className="absolute top-3 right-3 z-20">
+            <button
+              onClick={handleToggleLike}
+              className="relative w-10 h-10 rounded-full bg-white/95 backdrop-blur flex items-center justify-center shadow-md hover:bg-white hover:scale-110 transition-all z-10 overflow-hidden"
+              aria-label="Add to wishlist"
+            >
+              {isLiked && (
+                <span className="like-glow absolute inset-0" />
+              )}
+              {likeAnimating && (
+                <>
+                  <span className="absolute inset-0 rounded-full bg-red-100/70 animate-ping" />
+                  <span className="like-ripple" />
+                </>
+              )}
+              <Heart
+                className={`w-5 h-5 transition-all duration-300 ${
+                  isLiked ? 'fill-red-500 text-red-500' : 'text-gray-600'
+                } ${likeAnimating ? 'scale-125 rotate-6' : 'scale-100'} transform`}
+              />
+            </button>
+            {showLikeBurst && (
+              <div className="pointer-events-none absolute -top-6 -right-6 w-24 h-24">
+                <span className="like-ring ring-1" />
+                <span className="like-ring ring-2" />
+                <span className="like-petal petal-1" />
+                <span className="like-petal petal-2" />
+                <span className="like-petal petal-3" />
+                <span className="like-spark spark-1" />
+                <span className="like-spark spark-2" />
+                <span className="like-spark spark-3" />
+              </div>
+            )}
+          </div>
 
           {/* Delivery Badge - Shows on hover */}
           <div className="absolute bottom-0 left-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
@@ -212,24 +279,213 @@ export default function ProductCard({
         </div>
         </div>
       </Link>
-      {isMounted && showLottie && buttonRef.current
+      {isMounted && showLottie && cardRef.current
         ? createPortal(
-            <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 pointer-events-none">
-              <div className="w-full max-w-[360px] rounded-3xl bg-white shadow-2xl border border-emerald-100 px-6 py-6 sm:px-8 sm:py-7 flex flex-col items-center gap-4">
-                <Lottie
-                  animationData={shoppingCartAnimation}
-                  loop={false}
-                  className="w-[60vw] max-w-[240px] sm:max-w-[280px]"
-                  style={{ height: 'auto' }}
-                />
+            <div className="pointer-events-none absolute inset-0 z-30 flex items-center justify-center bg-white/80 backdrop-blur-sm">
+              <div className="w-[min(80%,320px)] max-w-[260px] rounded-3xl bg-white shadow-xl px-5 py-6 sm:px-6 sm:py-7 flex flex-col items-center gap-4">
+                <Lottie animationData={shoppingCartAnimation} loop={false} className="w-full max-w-[220px]" style={{ height: 'auto' }} />
                 <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.32em] text-emerald-700 text-center">
                   Adding to Cart
                 </p>
               </div>
             </div>,
-            document.body
+            cardRef.current
           )
         : null}
+      <style jsx>{`
+        .like-glow {
+          opacity: 0;
+          border-radius: 9999px;
+          background: radial-gradient(circle at 50% 40%, rgba(254, 226, 226, 0.9), rgba(251, 113, 133, 0.35));
+          animation: like-glow 1s ease-out forwards;
+        }
+        .like-ripple {
+          position: absolute;
+          inset: -6px;
+          border-radius: 9999px;
+          border: 2px solid rgba(251, 113, 133, 0.35);
+          opacity: 0;
+          animation: like-ripple 0.6s ease-out forwards;
+        }
+        .like-spark {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 12px;
+          height: 12px;
+          border-radius: 9999px;
+          background: radial-gradient(circle at 30% 30%, #fda4af, #fb7185);
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0.4);
+          filter: blur(0.2px);
+        }
+        .like-ring {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 12px;
+          height: 12px;
+          border: 2px solid rgba(251, 113, 133, 0.35);
+          border-radius: 9999px;
+          opacity: 0;
+        }
+        .ring-1 {
+          animation: like-ring-burst 0.85s ease-out forwards;
+        }
+        .ring-2 {
+          animation: like-ring-burst 0.85s ease-out forwards 120ms;
+        }
+        .like-petal {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 10px;
+          height: 18px;
+          border-radius: 9999px;
+          background: linear-gradient(180deg, #fb7185 0%, #f43f5e 100%);
+          opacity: 0;
+          transform-origin: center;
+        }
+        .petal-1 {
+          animation: petal-one 0.8s ease-out forwards;
+        }
+        .petal-2 {
+          animation: petal-two 0.8s ease-out forwards 60ms;
+        }
+        .petal-3 {
+          animation: petal-three 0.8s ease-out forwards 120ms;
+        }
+        .spark-1 {
+          animation: spark-one 0.7s ease-out forwards;
+        }
+        .spark-2 {
+          animation: spark-two 0.7s ease-out forwards 60ms;
+        }
+        .spark-3 {
+          animation: spark-three 0.7s ease-out forwards 120ms;
+        }
+        @keyframes like-glow {
+          0% {
+            opacity: 0;
+            transform: scale(0.6);
+          }
+          40% {
+            opacity: 1;
+            transform: scale(1.05);
+          }
+          100% {
+            opacity: 0;
+            transform: scale(1.4);
+          }
+        }
+        @keyframes like-ripple {
+          0% {
+            opacity: 0.8;
+            transform: scale(0.6);
+          }
+          100% {
+            opacity: 0;
+            transform: scale(1.25);
+          }
+        }
+        @keyframes like-ring-burst {
+          0% {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.5);
+          }
+          40% {
+            opacity: 0.9;
+          }
+          100% {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(2.1);
+          }
+        }
+        @keyframes petal-one {
+          0% {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.3) rotate(-18deg);
+          }
+          45% {
+            opacity: 1;
+            transform: translate(-140%, -160%) scale(0.9) rotate(-28deg);
+          }
+          100% {
+            opacity: 0;
+            transform: translate(-200%, -250%) scale(0.4) rotate(-38deg);
+          }
+        }
+        @keyframes petal-two {
+          0% {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.3) rotate(6deg);
+          }
+          45% {
+            opacity: 1;
+            transform: translate(-40%, -220%) scale(1) rotate(12deg);
+          }
+          100% {
+            opacity: 0;
+            transform: translate(-40%, -300%) scale(0.5) rotate(22deg);
+          }
+        }
+        @keyframes petal-three {
+          0% {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.3) rotate(24deg);
+          }
+          45% {
+            opacity: 1;
+            transform: translate(90%, -150%) scale(0.85) rotate(32deg);
+          }
+          100% {
+            opacity: 0;
+            transform: translate(140%, -220%) scale(0.45) rotate(42deg);
+          }
+        }
+        @keyframes spark-one {
+          0% {
+            opacity: 0;
+            transform: translate(-40%, -40%) scale(0.4);
+          }
+          40% {
+            opacity: 0.9;
+            transform: translate(-110%, -120%) scale(1.05);
+          }
+          100% {
+            opacity: 0;
+            transform: translate(-150%, -190%) scale(0.6);
+          }
+        }
+        @keyframes spark-two {
+          0% {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.4);
+          }
+          40% {
+            opacity: 0.9;
+            transform: translate(-60%, -160%) scale(1.15);
+          }
+          100% {
+            opacity: 0;
+            transform: translate(-60%, -220%) scale(0.6);
+          }
+        }
+        @keyframes spark-three {
+          0% {
+            opacity: 0;
+            transform: translate(-60%, -40%) scale(0.4);
+          }
+          40% {
+            opacity: 0.9;
+            transform: translate(20%, -120%) scale(1);
+          }
+          100% {
+            opacity: 0;
+            transform: translate(70%, -190%) scale(0.55);
+          }
+        }
+      `}</style>
     </>
   );
 }

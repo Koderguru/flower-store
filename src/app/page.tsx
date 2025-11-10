@@ -139,16 +139,7 @@ export default function Home() {
           y: 20,
           opacity: 0,
           duration: 0.6,
-        })
-        .from(
-          '.hero-visual',
-          {
-            opacity: 0,
-            y: 40,
-            duration: 0.6,
-          },
-          '-=0.45'
-        );
+        });
 
       const btn = searchButtonRef.current;
       if (!btn) return;
@@ -320,6 +311,7 @@ export default function Home() {
   );
 
   return (
+    <>
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section - Full Width Carousel */}
       <section ref={heroRef} className="relative overflow-hidden bg-gray-100">
@@ -328,33 +320,35 @@ export default function Home() {
           <div ref={carouselRef} className="relative overflow-hidden">
             <div className="carousel-track flex transition-transform">
               {heroImages.map((image, index) => (
-                <div key={index} className="min-w-full relative aspect-[21/9] md:aspect-[21/7]">
-                  <Image
-                    src={image}
-                    alt={`Flower arrangement ${index + 1}`}
-                    fill
-                    sizes="100vw"
-                    className="object-cover"
-                    priority={index === 0}
-                  />
-                  {/* Overlay Gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
-                  
-                  {/* Overlay Content */}
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-                      <div className="max-w-2xl">
-                        <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 leading-tight drop-shadow-lg">
-                          Surprises
-              <br />
-                          <span className="text-red-500">ANNIVERSARY</span>
-            </h1>
-                        <p className="text-lg md:text-xl text-white mb-8 drop-shadow-md">
-                          Make Your Anniversary Feel Unforgettable With Flowers
-                        </p>
-                        <button className="px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg shadow-lg transition-all transform hover:scale-105">
-                          SHOP NOW
-                        </button>
+                <div key={index} className="min-w-full px-1 sm:px-4 lg:px-10">
+                  <div className="hero-frame relative mx-auto aspect-[21/9] md:aspect-[21/7]">
+                    <Image
+                      src={image}
+                      alt={`Flower arrangement ${index + 1}`}
+                      fill
+                      sizes="100vw"
+                      className="object-cover hero-visual"
+                      priority={index === 0}
+                    />
+                    <div className="hero-overlay absolute inset-0" />
+                    <div className="hero-curve hero-curve--accent" />
+                    <div className="hero-curve hero-curve--accentSecondary" />
+                    <div className="hero-curve hero-curve--glow" />
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                        <div className="max-w-2xl">
+                          <h1 className="font-display text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-4 leading-tight drop-shadow-lg">
+                            Surprises
+                            <br />
+                            <span className="text-red-500">ANNIVERSARY</span>
+                          </h1>
+                          <p className="text-lg md:text-xl text-white mb-8 drop-shadow-md">
+                            Make Your Anniversary Feel Unforgettable With Flowers
+                          </p>
+                          <button className="px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg shadow-lg transition-all transform hover:scale-105">
+                            SHOP NOW
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -674,5 +668,64 @@ export default function Home() {
         </div>
       </section>
     </div>
+    <style jsx>{`
+      .hero-frame {
+        border-radius: clamp(22px, 5vw, 64px);
+        overflow: hidden;
+        position: relative;
+        isolation: isolate;
+        box-shadow: 0 25px 45px -35px rgba(15, 23, 42, 0.45);
+      }
+      .hero-overlay {
+        background: linear-gradient(110deg, rgba(15, 23, 42, 0.75) 0%, rgba(15, 23, 42, 0.35) 50%, rgba(15, 23, 42, 0.05) 78%, rgba(15, 23, 42, 0) 100%);
+        mix-blend-mode: multiply;
+      }
+      .hero-curve {
+        position: absolute;
+        border-radius: 999px;
+        filter: blur(0);
+        pointer-events: none;
+        opacity: 0.55;
+      }
+      .hero-curve--accent {
+        width: clamp(140px, 24vw, 280px);
+        height: clamp(200px, 32vw, 360px);
+        bottom: clamp(-72px, -7vw, -26px);
+        right: clamp(-110px, -5vw, -36px);
+        background: radial-gradient(circle at 42% 38%, rgba(244, 63, 94, 0.6), rgba(244, 63, 94, 0.04));
+        transform: rotate(15deg);
+        filter: blur(22px);
+        opacity: 0.55;
+      }
+      .hero-curve--accentSecondary {
+        width: clamp(160px, 28vw, 300px);
+        height: clamp(190px, 30vw, 340px);
+        top: clamp(-110px, -9vw, -36px);
+        right: clamp(-140px, -7vw, -52px);
+        background: radial-gradient(circle at 50% 50%, rgba(249, 168, 212, 0.4), rgba(255, 255, 255, 0));
+        transform: rotate(-10deg);
+        filter: blur(26px);
+        opacity: 0.6;
+      }
+      .hero-curve--glow {
+        inset: auto 14% -16% auto;
+        width: clamp(170px, 28vw, 340px);
+        height: clamp(170px, 30vw, 340px);
+        background: radial-gradient(circle at 60% 40%, rgba(253, 186, 140, 0.4), rgba(251, 113, 133, 0.05) 58%, rgba(255, 255, 255, 0));
+        filter: blur(30px);
+        opacity: 0.62;
+      }
+      @media (max-width: 768px) {
+        .hero-frame {
+          border-radius: clamp(20px, 7vw, 40px);
+        }
+        .hero-curve--accent,
+        .hero-curve--accentSecondary,
+        .hero-curve--glow {
+          opacity: 0.45;
+        }
+      }
+    `}</style>
+    </>
   );
 }
