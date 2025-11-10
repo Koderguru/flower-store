@@ -166,10 +166,13 @@ export default function Navbar() {
           </Link>
 
             {/* Track Order */}
-            <button className="hidden lg:flex items-center gap-2 px-4 py-2 hover:bg-gray-50 rounded-lg transition-colors">
+            <Link
+              href="/track"
+              className="hidden lg:flex items-center gap-2 px-4 py-2 hover:bg-gray-50 rounded-lg transition-colors"
+            >
               <Package className="w-5 h-5 text-gray-700" />
               <span className="text-sm font-medium text-gray-900">Lacak Pesanan</span>
-            </button>
+            </Link>
 
             {/* Cart */}
             <Link href="/cart" className="relative p-2 hover:bg-gray-50 rounded-lg transition-colors">
@@ -284,6 +287,13 @@ export default function Navbar() {
               {item.name}
             </a>
           ))}
+          <Link
+            href="/track"
+            className="block px-4 py-3 rounded-lg hover:bg-emerald-50 text-gray-700 font-medium"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Lacak Pesanan
+          </Link>
         </div>
       </div>
     </nav>
