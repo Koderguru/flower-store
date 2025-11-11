@@ -297,7 +297,7 @@ export default function CartPage() {
                     value={couponCode}
                     onChange={(e) => setCouponCode(e.target.value)}
                     placeholder="Enter code e.g. BLOOM10"
-                    className="flex-1 border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
+                    className="flex-1 rounded-lg px-4 py-3 border border-emerald-200 bg-emerald-600/90 text-white placeholder:text-emerald-100 shadow-inner focus:outline-none focus:ring-2 focus:ring-white/70 focus:border-emerald-400"
                   />
                   {discountPercent > 0 ? (
                     <button

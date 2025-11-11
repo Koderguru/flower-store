@@ -443,17 +443,26 @@ export default function CheckoutPage() {
                       </div>
                     </div>
                   <div className="mt-6 space-y-4">
-                    <label className="flex items-start gap-3">
-                      <input
-                        type="checkbox"
-                        checked={billingSameAsShipping}
-                        onChange={(event) => setBillingSameAsShipping(event.target.checked)}
-                        className="mt-1 h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
-                      />
-                      <span className="text-sm text-gray-700">
-                        Use the same details for billing
-                      </span>
-                    </label>
+                    <div className="rounded-2xl border border-emerald-100 bg-white/80 shadow-sm">
+                      <label className="flex items-start gap-4 p-4 sm:p-5 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={billingSameAsShipping}
+                          onChange={(event) => setBillingSameAsShipping(event.target.checked)}
+                          className="mt-1 h-4 w-4 rounded border-emerald-300 text-emerald-600 focus:ring-emerald-500"
+                        />
+                        <div className="flex-1 space-y-1">
+                          <p className="flex items-center gap-2 text-sm font-semibold text-gray-900">
+                            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                            Use shipping details for billing
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            Keep this on if your billing information matches the delivery address.
+                            Turn it off to add a different billing address.
+                          </p>
+                        </div>
+                      </label>
+                    </div>
 
                     {!billingSameAsShipping && (
                       <div className="rounded-2xl border border-emerald-100 bg-emerald-50/40 p-4 md:p-6 space-y-4">
