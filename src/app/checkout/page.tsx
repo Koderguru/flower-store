@@ -526,7 +526,7 @@ export default function CheckoutPage() {
                           <input
                             value={cardDetails.nameOnCard}
                             onChange={(e) => handleCardChange('nameOnCard', e.target.value)}
-                            placeholder="Aditi Sharma"
+                            placeholder="Ayu Putri"
                             className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
                           />
                         </div>

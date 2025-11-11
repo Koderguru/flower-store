@@ -44,7 +44,7 @@ export default function ProductDetailSheet({ product }: ProductDetailSheetProps)
     },
   };
 
-  const cities = ['Mumbai', 'Delhi NCR', 'Bengaluru', 'Hyderabad', 'Chennai', 'Kolkata'];
+  const cities = ['Jakarta Selatan', 'Bandung', 'Surabaya', 'Denpasar', 'Yogyakarta', 'Medan'];
 
   const currentVariant = variants[selectedVariant];
 

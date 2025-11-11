@@ -18,31 +18,31 @@ export default function LocationModal({ isOpen, onClose, onSelectLocation }: Loc
 
   const popularCities = useMemo(
     () => [
-      { name: 'South Mumbai', region: 'Maharashtra', eta: 'Delivered within 2 hours' },
-      { name: 'Bandra West', region: 'Maharashtra', eta: 'Delivered within 3 hours' },
-      { name: 'South Delhi', region: 'Delhi NCR', eta: 'Delivered within 2 hours' },
-      { name: 'Gurugram Central', region: 'Delhi NCR', eta: 'Delivered within 3 hours' },
-      { name: 'Indiranagar', region: 'Karnataka', eta: 'Delivered within 3 hours' },
-      { name: 'Whitefield', region: 'Karnataka', eta: 'Delivered within 4 hours' },
-      { name: 'Jubilee Hills', region: 'Telangana', eta: 'Delivered within 1 day' },
-      { name: 'Kondapur', region: 'Telangana', eta: 'Delivered within 1 day' },
-      { name: 'Salt Lake', region: 'West Bengal', eta: 'Delivered within 1 day' },
-      { name: 'Alwarpet', region: 'Tamil Nadu', eta: 'Delivered within 2 days' },
-      { name: 'Fort Kochi', region: 'Kerala', eta: 'Delivered within 2 days' },
-      { name: 'Sector 17, Chandigarh', region: 'Chandigarh', eta: 'Delivered within 2 days' },
+      { name: 'Senopati', region: 'Jakarta Selatan', eta: 'Tiba dalam 2 jam' },
+      { name: 'Kelapa Gading', region: 'Jakarta Utara', eta: 'Tiba dalam 3 jam' },
+      { name: 'Menteng', region: 'Jakarta Pusat', eta: 'Tiba dalam 2 jam' },
+      { name: 'BSD City', region: 'Tangerang Selatan', eta: 'Tiba dalam 3 jam' },
+      { name: 'Pondok Indah', region: 'Jakarta Selatan', eta: 'Tiba dalam 3 jam' },
+      { name: 'Setiabudi', region: 'Jakarta Selatan', eta: 'Tiba dalam 2 jam' },
+      { name: 'Dago Atas', region: 'Bandung', eta: 'Tiba dalam 1 hari' },
+      { name: 'Ubud', region: 'Bali', eta: 'Tiba dalam 1 hari' },
+      { name: 'Canggu', region: 'Bali', eta: 'Tiba dalam 1 hari' },
+      { name: 'Pakuwon', region: 'Surabaya', eta: 'Tiba dalam 1 hari' },
+      { name: 'Malioboro', region: 'Yogyakarta', eta: 'Tiba dalam 1 hari' },
+      { name: 'Padang Bulan', region: 'Medan', eta: 'Tiba dalam 2 hari' },
     ],
     []
   );
 
   const curatedRegions = useMemo(
     () => [
-      'Delhi NCR',
-      'Maharashtra',
-      'Karnataka',
-      'Tamil Nadu',
-      'Telangana',
-      'West Bengal',
-      'Kerala',
+      'Jakarta',
+      'Bandung',
+      'Surabaya',
+      'Bali',
+      'Yogyakarta',
+      'Medan',
+      'Makassar',
     ],
     []
   );
