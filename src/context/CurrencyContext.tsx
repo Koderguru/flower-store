@@ -18,16 +18,17 @@ const conversionRates: Record<Currency, number> = {
   USD: 1 / 15500,
 };
 
+const currencySymbols: Record<Currency, string> = {
+  IDR: 'IDR',
+  USD: 'USD',
+};
+
 const currencyFormatters: Record<Currency, Intl.NumberFormat> = {
   IDR: new Intl.NumberFormat('id-ID', {
-    style: 'currency',
-    currency: 'IDR',
     maximumFractionDigits: 0,
     minimumFractionDigits: 0,
   }),
   USD: new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }),
@@ -55,7 +56,8 @@ export function CurrencyProvider({ children }: CurrencyProviderProps) {
 
   const formatPrice = (amountInIdr: number) => {
     const converted = amountInIdr * conversionRates[currency];
-    return currencyFormatters[currency].format(converted);
+    const formatted = currencyFormatters[currency].format(converted);
+    return `${currencySymbols[currency]} ${formatted}`;
   };
 
   const convertAmount = (amountInIdr: number, targetCurrency: Currency = currency) => {

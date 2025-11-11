@@ -42,13 +42,13 @@ export default function Home() {
   const promotionalBanners = [
     {
       title: 'Flowers & Chocolates',
-      subtitle: 'Mulai Rp 549.000',
+      subtitle: 'Mulai IDR 549.000',
       image: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=600&q=80',
       bgColor: 'bg-pink-50',
     },
     {
       title: 'Affordable Range',
-      subtitle: 'Mulai Rp 349.000',
+      subtitle: 'Mulai IDR 349.000',
       image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=600&q=80',
       bgColor: 'bg-blue-50',
     },

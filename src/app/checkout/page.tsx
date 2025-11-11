@@ -338,7 +338,7 @@ export default function CheckoutPage() {
                       <input
                         value={shippingDetails.firstName}
                         onChange={(e) => handleShippingChange('firstName', e.target.value)}
-                        placeholder="Aditi"
+                        placeholder="Ayu"
                         className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
                       />
                     </div>
@@ -347,7 +347,7 @@ export default function CheckoutPage() {
                       <input
                         value={shippingDetails.lastName}
                         onChange={(e) => handleShippingChange('lastName', e.target.value)}
-                        placeholder="Sharma"
+                        placeholder="Putri"
                         className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
                       />
                     </div>
@@ -357,7 +357,7 @@ export default function CheckoutPage() {
                         type="email"
                         value={shippingDetails.email}
                         onChange={(e) => handleShippingChange('email', e.target.value)}
-                        placeholder="aditi@example.com"
+                        placeholder="ayu@example.com"
                         className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
                       />
                     </div>
@@ -366,7 +366,7 @@ export default function CheckoutPage() {
                       <input
                         value={shippingDetails.phone}
                         onChange={(e) => handleShippingChange('phone', e.target.value)}
-                        placeholder="+91 98765 43210"
+                        placeholder="+62 812-5555-1234"
                         className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
                       />
                     </div>
@@ -377,7 +377,7 @@ export default function CheckoutPage() {
                       <input
                         value={shippingDetails.address}
                         onChange={(e) => handleShippingChange('address', e.target.value)}
-                        placeholder="Flat 12B, Bloom Residences"
+                        placeholder="Jl. Taman Anggrek No. 12"
                         className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
                       />
                     </div>
@@ -387,7 +387,7 @@ export default function CheckoutPage() {
                         <input
                           value={shippingDetails.city}
                           onChange={(e) => handleShippingChange('city', e.target.value)}
-                          placeholder="Mumbai"
+                          placeholder="Jakarta Selatan"
                           className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
                         />
                       </div>
@@ -396,7 +396,7 @@ export default function CheckoutPage() {
                         <input
                           value={shippingDetails.state}
                           onChange={(e) => handleShippingChange('state', e.target.value)}
-                          placeholder="Maharashtra"
+                          placeholder="DKI Jakarta"
                           className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
                         />
                       </div>
@@ -407,7 +407,7 @@ export default function CheckoutPage() {
                         <input
                           value={shippingDetails.postalCode}
                           onChange={(e) => handleShippingChange('postalCode', e.target.value)}
-                          placeholder="400001"
+                          placeholder="12190"
                           className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
                         />
                       </div>
@@ -416,7 +416,7 @@ export default function CheckoutPage() {
                         <input
                           value={shippingDetails.country}
                           onChange={(e) => handleShippingChange('country', e.target.value)}
-                          placeholder="India"
+                          placeholder="Indonesia"
                           className="w-full border border-gray-200 rounded-xl px-4 py-3 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
                         />
                       </div>
