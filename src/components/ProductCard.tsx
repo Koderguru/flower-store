@@ -7,6 +7,7 @@ import { createPortal } from 'react-dom';
 import { ShoppingCart, Heart, Star, Truck } from 'lucide-react';
 import Lottie from 'lottie-react';
 import shoppingCartAnimation from '@/data/Shopping Cart.json';
+import { useCurrency } from '@/context/CurrencyContext';
 
 interface ProductCardProps {
   id: string;
@@ -38,6 +39,7 @@ export default function ProductCard({
   const buttonRef = useRef<HTMLButtonElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const [isMounted, setIsMounted] = useState(false);
+  const { formatPrice } = useCurrency();
 
   useEffect(() => {
     setIsMounted(true);
@@ -127,24 +129,6 @@ export default function ProductCard({
   const discount = originalPrice
     ? Math.round(((originalPrice - price) / originalPrice) * 100)
     : 0;
-
-  const formatPrice = (value: number) => {
-    const idrFormatter = new Intl.NumberFormat('id-ID');
-    const usdFormatter = new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 2,
-    });
-
-    const usdValue = value / 18250; // estimated conversion
-    return {
-      idr: `IND ${idrFormatter.format(value)}`,
-      usd: `${usdFormatter.format(usdValue)}`,
-    };
-  };
-
-  const formattedPrice = formatPrice(price);
-  const formattedOriginalPrice = originalPrice ? formatPrice(originalPrice) : null;
 
   return (
     <>
@@ -257,12 +241,10 @@ export default function ProductCard({
 
           {/* Price Section */}
           <div className="mb-3 space-y-1">
-            <span className="block text-sm font-semibold text-gray-900 uppercase tracking-[0.25em]">
-              {formattedPrice.idr} / {formattedPrice.usd}
-            </span>
-            {formattedOriginalPrice && (
-              <span className="block text-xs text-gray-400 line-through">
-                {formattedOriginalPrice.idr} / {formattedOriginalPrice.usd}
+            <span className="block text-xl font-bold text-gray-900">{formatPrice(price)}</span>
+            {originalPrice && originalPrice > price && (
+              <span className="block text-sm text-gray-400 line-through">
+                {formatPrice(originalPrice)}
               </span>
             )}
             {discount > 0 && (

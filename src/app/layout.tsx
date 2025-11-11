@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import RecentlyViewed from "@/components/RecentlyViewed";
+import { CurrencyProvider } from "@/context/CurrencyContext";
 
 const sans = Manrope({
   subsets: ["latin"],
@@ -35,10 +36,12 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <Navbar />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
-          <RecentlyViewed />
+          <CurrencyProvider>
+            <Navbar />
+            <main className="min-h-screen">{children}</main>
+            <Footer />
+            <RecentlyViewed />
+          </CurrencyProvider>
         </ThemeProvider>
       </body>
     </html>

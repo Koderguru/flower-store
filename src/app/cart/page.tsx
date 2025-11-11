@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft, CreditCard } from 'lucide-react';
 import { products, type Product } from '@/data/products';
+import { useCurrency } from '@/context/CurrencyContext';
 
 interface CartItem {
   id: string;
@@ -23,6 +24,7 @@ export default function CartPage() {
   const [discountPercent, setDiscountPercent] = useState(0);
   const [couponMessage, setCouponMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [cartNotice, setCartNotice] = useState<string | null>(null);
+  const { formatPrice } = useCurrency();
 
   useEffect(() => {
     loadCart();
@@ -202,7 +204,7 @@ export default function CartPage() {
                       </p>
                     )}
                     <p className="text-lg font-bold text-gray-900 mt-2">
-                      Rp {item.price.toLocaleString('id-ID')}
+                      {formatPrice(item.price)}
                     </p>
 
                     {/* Quantity Controls */}
@@ -236,7 +238,7 @@ export default function CartPage() {
                   <div className="text-right">
                     <p className="text-sm text-gray-500">Subtotal</p>
                     <p className="text-xl font-bold text-gray-900">
-                      Rp {(item.price * item.quantity).toLocaleString('id-ID')}
+                      {formatPrice(item.price * item.quantity)}
                     </p>
                   </div>
                 </div>
@@ -267,7 +269,7 @@ export default function CartPage() {
                         {product.name}
                       </h3>
                       <p className="text-base font-bold text-gray-900 mt-2">
-                        Rp {product.price.toLocaleString('id-ID')}
+                        {formatPrice(product.price)}
                       </p>
                       <button
                         type="button"
@@ -329,12 +331,12 @@ export default function CartPage() {
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-gray-600">
                   <span>Subtotal</span>
-                  <span>Rp {subtotal.toLocaleString('id-ID')}</span>
+                  <span>{formatPrice(subtotal)}</span>
                 </div>
                 {discountPercent > 0 && (
                   <div className="flex justify-between text-emerald-600">
                     <span>Discount ({discountPercent}%)</span>
-                    <span>-Rp {discountAmount.toLocaleString('id-ID')}</span>
+                    <span>-{formatPrice(discountAmount)}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-gray-600">
@@ -343,7 +345,7 @@ export default function CartPage() {
                 </div>
                 <div className="border-t border-gray-200 pt-3 flex justify-between text-lg font-bold text-gray-900">
                   <span>Total</span>
-                  <span>Rp {total.toLocaleString('id-ID')}</span>
+                  <span>{formatPrice(total)}</span>
                 </div>
               </div>
 
@@ -356,7 +358,7 @@ export default function CartPage() {
               </button>
 
               <p className="text-xs text-gray-500 text-center mt-4">
-                Free delivery on orders above Rp 10.000.000. Express upgrades available at checkout.
+                Free delivery on orders above {formatPrice(10000000)}. Express upgrades available at checkout.
               </p>
             </div>
           </div>

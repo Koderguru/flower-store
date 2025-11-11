@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { CreditCard, ShieldCheck, ArrowLeft, CheckCircle2, Truck, MapPin, Wallet } from 'lucide-react';
+import { useCurrency } from '@/context/CurrencyContext';
 
 interface CartItem {
   id: string;

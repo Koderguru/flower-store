@@ -8,6 +8,7 @@ import { Search, ShoppingCart, User, MapPin, Menu, X, ChevronDown, Heart, Packag
 import LocationModal from './LocationModal';
 import MegaMenu from './MegaMenu';
 import { gsap } from '@/lib/gsap';
+import { Currency, useCurrency } from '@/context/CurrencyContext';
 
 export default function Navbar() {
   const router = useRouter();
@@ -15,7 +16,8 @@ export default function Navbar() {
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
   const [cartCount, setCartCount] = useState(0);
-  const [selectedLocation, setSelectedLocation] = useState('Mumbai');
+  const [selectedLocation, setSelectedLocation] = useState('Jakarta');
+  const { currency, setCurrency } = useCurrency();
 
   useEffect(() => {
     const updateCartCount = () => {
@@ -32,6 +34,7 @@ export default function Navbar() {
   const navRef = useRef<HTMLElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const closeMegaMenuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const currencyOptions: Currency[] = ['IDR', 'USD'];
 
   const navItems = [
     { name: 'Express Delivery', href: '/collections/express', hasDropdown: true, menuType: 'express' as const },
@@ -179,10 +182,10 @@ export default function Navbar() {
             >
               <div className="flex flex-col items-start">
                 <span className="font-display text-2xl font-bold text-gray-900 tracking-tight">
-                  FLOWERS<span className="text-emerald-600">INDIA</span>
+                  FLOWERS<span className="text-emerald-600">INDONESIA</span>
                 </span>
                 <span className="text-[10px] font-medium text-gray-600 tracking-wider uppercase">
-                  Delivering Happiness
+                  Delivering Happiness Across Indonesia
                 </span>
               </div>
             </button>
@@ -221,6 +224,27 @@ export default function Navbar() {
               <Package className="w-5 h-5 text-gray-700" />
               <span className="text-sm font-medium text-gray-900">Track Order</span>
             </Link>
+
+            {/* Currency Selector */}
+            <div className="hidden lg:flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 bg-white/80">
+              <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">Currency</span>
+              <div className="flex items-center gap-1 rounded-full bg-gray-100 p-1">
+                {currencyOptions.map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    onClick={() => setCurrency(option)}
+                    className={`px-2.5 py-1 text-xs font-semibold rounded-full transition ${
+                      currency === option
+                        ? 'bg-emerald-600 text-white shadow-sm shadow-emerald-200'
+                        : 'text-gray-600 hover:bg-white hover:shadow'
+                    }`}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            </div>
 
             {/* Cart */}
             <Link href="/cart" className="relative p-2 hover:bg-gray-50 rounded-lg transition-colors">
@@ -338,7 +362,7 @@ export default function Navbar() {
         className="lg:hidden border-t border-gray-100 bg-white overflow-hidden"
         style={{ display: 'none', height: 0, opacity: 0 }}
       >
-        <div className="px-4 py-4 space-y-2">
+        <div className="px-4 py-4 space-y-3">
           {navItems.map((item, index) => (
             <a
               key={item.name}
@@ -357,6 +381,28 @@ export default function Navbar() {
           >
             Track Order
           </Link>
+          <div className="px-4 py-3 rounded-lg border border-gray-200 bg-gray-50">
+            <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">Currency</span>
+            <div className="mt-3 flex items-center gap-2">
+              {currencyOptions.map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  onClick={() => {
+                    setCurrency(option);
+                    setIsMenuOpen(false);
+                  }}
+                  className={`flex-1 rounded-full px-3 py-2 text-sm font-semibold transition ${
+                    currency === option
+                      ? 'bg-emerald-600 text-white shadow'
+                      : 'bg-white text-gray-700 border border-gray-200'
+                  }`}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </nav>

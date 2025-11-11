@@ -55,7 +55,7 @@ export const products: Product[] = [
     reviews: 238,
     badge: 'Hot Pick',
     category: 'Orchids',
-    image: getImage(0),
+    image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1080&q=80',
     description: 'Handcrafted bouquet with premium red roses, styled with lush foliage for dramatic presence.',
     composition: ['100 premium long-stem roses', 'Seasonal foliage collar', 'Luxury matte wrap'],
     deliveryInfo: 'Same-day delivery available in metro cities. Concierge hand-off included.',
