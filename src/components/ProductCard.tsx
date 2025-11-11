@@ -265,6 +265,11 @@ export default function ProductCard({
                 {formattedOriginalPrice.idr} / {formattedOriginalPrice.usd}
               </span>
             )}
+            {discount > 0 && (
+              <span className="inline-block text-xs font-semibold text-emerald-600">
+                Save {discount}% today
+              </span>
+            )}
           </div>
 
           {/* Add to Cart Button */}

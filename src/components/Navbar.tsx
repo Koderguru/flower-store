@@ -151,6 +151,11 @@ export default function Navbar() {
             <button
               type="button"
               className="flex items-center gap-2 focus:outline-none"
+              onClick={() => {
+                setActiveMegaMenu(null);
+                router.push('/');
+              }}
+              aria-label="Go to homepage"
               onPointerMove={(event) => {
                 const target = event.currentTarget;
                 const bounds = target.getBoundingClientRect();

@@ -4,6 +4,7 @@ import { useMemo, useRef, useState } from 'react';
 import { useGSAP } from '@gsap/react';
 import { Search, Sparkles, ArrowRight, Leaf, Clock4, Crown, Truck, Palette, Gem, MapPin, ShieldCheck, ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import ProductCard from '@/components/ProductCard';
 import CategoryChip from '@/components/CategoryChip';
 import { products, categories } from '@/data/products';
@@ -470,9 +471,12 @@ export default function Home() {
                   Handpicked Floral Deliveries - All Over India
                 </p>
               </div>
-              <button className="px-6 py-2 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors">
+              <Link
+                href="/products"
+                className="px-6 py-2 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
+              >
                 EXPLORE ALL
-              </button>
+              </Link>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {products.slice(0, 4).map((product) => (
@@ -490,9 +494,12 @@ export default function Home() {
                 </h2>
                 <p className="text-gray-600 mt-1">Same Day & Midnight Delivery Available</p>
               </div>
-              <button className="px-6 py-2 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors">
+              <Link
+                href="/products"
+                className="px-6 py-2 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
+              >
                 EXPLORE ALL
-              </button>
+              </Link>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {products.slice(4, 8).map((product) => (
@@ -510,9 +517,12 @@ export default function Home() {
                 </h2>
                 <p className="text-gray-600 mt-1">Perfect Blooms for Every Celebration</p>
               </div>
-              <button className="px-6 py-2 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors">
+              <Link
+                href="/products"
+                className="px-6 py-2 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
+              >
                 EXPLORE ALL
-              </button>
+              </Link>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {products.slice(8, 12).map((product) => (
@@ -574,9 +584,12 @@ export default function Home() {
             ))}
           </div>
           <div className="text-center">
-            <button className="px-8 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors">
+            <Link
+              href="/products"
+              className="inline-flex px-8 py-3 bg-gray-900 text-white font-semibold rounded-lg hover:bg-gray-800 transition-colors"
+            >
               EXPLORE ALL
-            </button>
+            </Link>
           </div>
         </div>
       </section>
