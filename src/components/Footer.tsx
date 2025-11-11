@@ -9,7 +9,7 @@ export default function Footer() {
   const [email, setEmail] = useState('');
 
   const footerLinks = {
-    'FLOWERSINDIA': ['About Us', 'Delivery Information', 'Privacy Policy', 'Terms & Conditions', 'Contact Us'],
+    FLOWERSINDONESIA: ['About Us', 'Delivery Information', 'Privacy Policy', 'Terms & Conditions', 'Contact Us'],
     'Categories': ['Flowers', 'Cakes', 'Plants', 'Gifts', 'Combos', 'Chocolates'],
     'Occasions': ['Birthday', 'Anniversary', 'Wedding', 'Valentine', 'Mother\'s Day', 'Congratulations'],
     'Other Links': ['Corporate Gifts', 'Franchise', 'Careers', 'Blog', 'Customer Care'],
@@ -84,9 +84,10 @@ export default function Footer() {
         <div className="mb-12">
           <div className="flex flex-col items-center text-center mb-6">
             <h2 className="font-display text-3xl font-bold text-gray-900 mb-2">
-              FLOWERSINDIA            </h2>
+              FLOWERSINDONESIA
+            </h2>
             <p className="text-gray-600 max-w-2xl">
-              India's leading online gifting platform, delivering happiness across 600+ cities. 
+              Indonesia's leading online gifting platform, delivering happiness across 600+ cities.
               Fresh flowers, delicious cakes, and thoughtful gifts for every occasion.
             </p>
           </div>
@@ -118,7 +119,7 @@ export default function Footer() {
           {/* Copyright */}
           <div className="mt-8 pt-6 border-t border-gray-200">
             <p className="text-center text-gray-500 text-sm">
-              © 2024 FLOWERSINDIA. All rights reserved. | Delivering Happiness Since 2007
+              © 2024 FLOWERSINDONESIA. All rights reserved. | Delivering Happiness Since 2007
             </p>
           </div>
         </div>

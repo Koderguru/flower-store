@@ -470,7 +470,7 @@ export default function Home() {
                   Shop Flowers By Design
                 </h2>
                 <p className="text-gray-600 mt-1">
-                  Handpicked Floral Deliveries - All Over India
+                  Handpicked Floral Deliveries Across Indonesia
                 </p>
               </div>
               <Link
