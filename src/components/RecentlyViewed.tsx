@@ -93,7 +93,7 @@ export default function RecentlyViewed() {
                         {item.name}
                       </h4>
                       <p className="text-sm font-bold text-gray-900 mt-1">
-                        ₹ {item.price.toLocaleString('en-IN')}
+                        Rp {item.price.toLocaleString('id-ID')}
                       </p>
                     </div>
                   </div>

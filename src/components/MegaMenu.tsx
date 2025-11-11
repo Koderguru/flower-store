@@ -82,10 +82,10 @@ export default function MegaMenu({ isOpen, onClose, type, onNavigate, onMouseEnt
             {
               title: 'By Price',
               links: [
-                'Under ₹ 5,000',
-                '₹ 5,000 to ₹ 10,000',
-                '₹ 10,000 to ₹ 20,000',
-                'Above ₹ 20,000',
+                'Di bawah Rp 750.000',
+                'Rp 750.000 - Rp 1.500.000',
+                'Rp 1.500.000 - Rp 3.000.000',
+                'Di atas Rp 3.000.000',
               ],
             },
           ],

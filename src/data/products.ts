@@ -59,7 +59,7 @@ export const products: Product[] = [
     description: 'Handcrafted bouquet with premium red roses, styled with lush foliage for dramatic presence.',
     composition: ['100 premium long-stem roses', 'Seasonal foliage collar', 'Luxury matte wrap'],
     deliveryInfo: 'Same-day delivery available in metro cities. Concierge hand-off included.',
-    offers: ['Complimentary handwritten note', 'Add signature scented candle at ₹499'],
+    offers: ['Complimentary handwritten note', 'Add signature scented candle at Rp 149.000'],
   },
   {
     id: '2',
@@ -74,7 +74,7 @@ export const products: Product[] = [
     description: 'Lush orchid arrangement elevated with heart-shaped silhouette and vibrant greens.',
     composition: ['90 heart-clustered roses', 'Evergreen foliage base', 'Artisan wicker tray'],
     deliveryInfo: 'Delivered in climate-controlled vehicles within 2-4 hours.',
-    offers: ['Flat ₹300 off for first-time orders', 'Complimentary glass vase upgrade'],
+    offers: ['Hemat Rp 100.000 untuk pesanan pertama', 'Complimentary glass vase upgrade'],
   },
   {
     id: '3',
@@ -117,7 +117,7 @@ export const products: Product[] = [
     description: 'Softly layered rose arrangement perfect for anniversaries and milestones.',
     composition: ['60 garden roses', 'Baby’s breath halo', 'Wrapped in blush suede'],
     deliveryInfo: 'Timely delivery with live tracking updates via SMS.',
-    offers: ['Add-on macarons set at ₹399', 'Free next-day delivery coupon'],
+    offers: ['Tambah set makarons Rp 120.000', 'Free next-day delivery coupon'],
   },
   {
     id: '6',
@@ -132,7 +132,7 @@ export const products: Product[] = [
     description: 'Modern heart silhouette with premium blooms for statement gifting.',
     composition: ['Heart frame with 80 roses', 'Glossy philodendron leaves'],
     deliveryInfo: 'Priority handling with Bloom concierge service.',
-    offers: ['Launch offer: Save ₹750 automatically', 'Include personalised video message'],
+    offers: ['Promo peluncuran: hemat Rp 250.000 otomatis', 'Include personalised video message'],
   },
   {
     id: '7',
@@ -146,7 +146,7 @@ export const products: Product[] = [
     description: 'Compact yet lavish bloom arrangement ideal for desk displays.',
     composition: ['45 roses', 'Italian ruscus border'],
     deliveryInfo: 'Delivered in Bloom hydration box to maintain freshness.',
-    offers: ['₹200 cashback via Bloom Pay', 'Complimentary floral food sachet'],
+    offers: ['Cashback Rp 65.000 via Bloom Pay', 'Complimentary floral food sachet'],
   },
   {
     id: '8',
@@ -204,7 +204,7 @@ export const products: Product[] = [
     description: 'Classic romantic arrangement with curated rose mix.',
     composition: ['Mixed red & blush roses', 'Cedar foliage', 'Signature Bloom wrap'],
     deliveryInfo: 'Express shipping 2-3 hours in metro zones.',
-    offers: ['Bundle with Bloom plush bear at ₹299'],
+    offers: ['Bundle dengan boneka Bloom Rp 95.000'],
   },
   {
     id: '12',
@@ -218,7 +218,7 @@ export const products: Product[] = [
     description: 'Statement heart bouquet to celebrate grand romantic gestures.',
     composition: ['Heart frame with 110 roses', 'Trailing foliage accents'],
     deliveryInfo: 'Delivered in Bloom temperature bags for maximum freshness.',
-    offers: ['Free upgrade to luxe gift card', '₹250 off with code BLOOMLOVE'],
+    offers: ['Free upgrade to luxe gift card', 'Diskon Rp 80.000 dengan kode BLOOMLOVE'],
   },
 ];
 

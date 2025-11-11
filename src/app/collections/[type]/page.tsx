@@ -110,7 +110,7 @@ export default function CollectionPage({ params, searchParams }: PageProps) {
                   )}
                   {product.originalPrice && product.originalPrice > product.price && (
                     <span className="absolute top-3 right-3 rounded-md bg-emerald-500 px-3 py-1 text-xs font-semibold text-white shadow">
-                      Save ₹ {(product.originalPrice - product.price).toLocaleString('en-IN')}
+                      Save Rp {(product.originalPrice - product.price).toLocaleString('id-ID')}
                     </span>
                   )}
                 </div>
@@ -120,9 +120,9 @@ export default function CollectionPage({ params, searchParams }: PageProps) {
                   </h2>
                   <p className="text-sm text-gray-600 line-clamp-2">{product.description}</p>
                   <div className="flex items-center gap-2">
-                    <span className="text-lg font-bold text-gray-900">₹ {product.price.toLocaleString('en-IN')}</span>
+                    <span className="text-lg font-bold text-gray-900">Rp {product.price.toLocaleString('id-ID')}</span>
                     {product.originalPrice && product.originalPrice > product.price && (
-                      <span className="text-sm text-gray-400 line-through">₹ {product.originalPrice.toLocaleString('en-IN')}</span>
+                      <span className="text-sm text-gray-400 line-through">Rp {product.originalPrice.toLocaleString('id-ID')}</span>
                     )}
                   </div>
                 </div>

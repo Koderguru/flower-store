@@ -202,7 +202,7 @@ export default function CartPage() {
                       </p>
                     )}
                     <p className="text-lg font-bold text-gray-900 mt-2">
-                      ₹ {item.price.toLocaleString('en-IN')}
+                      Rp {item.price.toLocaleString('id-ID')}
                     </p>
 
                     {/* Quantity Controls */}
@@ -236,7 +236,7 @@ export default function CartPage() {
                   <div className="text-right">
                     <p className="text-sm text-gray-500">Subtotal</p>
                     <p className="text-xl font-bold text-gray-900">
-                      ₹ {(item.price * item.quantity).toLocaleString('en-IN')}
+                      Rp {(item.price * item.quantity).toLocaleString('id-ID')}
                     </p>
                   </div>
                 </div>
@@ -267,7 +267,7 @@ export default function CartPage() {
                         {product.name}
                       </h3>
                       <p className="text-base font-bold text-gray-900 mt-2">
-                        ₹ {product.price.toLocaleString('en-IN')}
+                        Rp {product.price.toLocaleString('id-ID')}
                       </p>
                       <button
                         type="button"
@@ -329,12 +329,12 @@ export default function CartPage() {
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between text-gray-600">
                   <span>Subtotal</span>
-                  <span>₹ {subtotal.toLocaleString('en-IN')}</span>
+                  <span>Rp {subtotal.toLocaleString('id-ID')}</span>
                 </div>
                 {discountPercent > 0 && (
                   <div className="flex justify-between text-emerald-600">
                     <span>Discount ({discountPercent}%)</span>
-                    <span>-₹ {discountAmount.toLocaleString('en-IN')}</span>
+                    <span>-Rp {discountAmount.toLocaleString('id-ID')}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-gray-600">
@@ -343,7 +343,7 @@ export default function CartPage() {
                 </div>
                 <div className="border-t border-gray-200 pt-3 flex justify-between text-lg font-bold text-gray-900">
                   <span>Total</span>
-                  <span>₹ {total.toLocaleString('en-IN')}</span>
+                  <span>Rp {total.toLocaleString('id-ID')}</span>
                 </div>
               </div>
 
@@ -356,7 +356,7 @@ export default function CartPage() {
               </button>
 
               <p className="text-xs text-gray-500 text-center mt-4">
-                Free delivery on orders above ₹ 10,000. Express upgrades available at checkout.
+                Free delivery on orders above Rp 10.000.000. Express upgrades available at checkout.
               </p>
             </div>
           </div>

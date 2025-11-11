@@ -453,7 +453,7 @@ export default function CheckoutPage() {
                           <span className="text-sm font-semibold text-emerald-600">
                             {option.price === 0
                               ? 'Free'
-                              : `₹ ${option.price.toLocaleString('en-IN')}`}
+                              : `Rp ${option.price.toLocaleString('id-ID')}`}
                           </span>
                         </div>
                         <p className="text-sm text-gray-500 mt-2">{option.description}</p>
@@ -721,7 +721,7 @@ export default function CheckoutPage() {
                     ) : (
                       <>
                         <CreditCard className="w-5 h-5" />
-                        Pay ₹ {orderTotal.toLocaleString('en-IN')}
+                        Pay Rp {orderTotal.toLocaleString('id-ID')}
                       </>
                     )}
                   </button>
@@ -745,7 +745,7 @@ export default function CheckoutPage() {
                 <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
                   <div className="flex items-center gap-2">
                     <Truck className="w-4 h-4 text-emerald-600" />
-                    Free delivery upgrade on orders above ₹8,999
+                    Free delivery upgrade on orders above Rp 130.000
                   </div>
                   <span className="hidden sm:block h-3 w-px bg-gray-200" />
                   <div className="flex items-center gap-2">
@@ -792,7 +792,7 @@ export default function CheckoutPage() {
                       </p>
                     </div>
                     <div className="text-sm font-semibold text-gray-900">
-                      ₹ {(item.price * item.quantity).toLocaleString('en-IN')}
+                      Rp {(item.price * item.quantity).toLocaleString('id-ID')}
                     </div>
                   </div>
                 ))}
@@ -802,13 +802,13 @@ export default function CheckoutPage() {
                 <div className="flex justify-between">
                   <span>Subtotal</span>
                   <span className="font-semibold text-gray-900">
-                    ₹ {subtotal.toLocaleString('en-IN')}
+                    Rp {subtotal.toLocaleString('id-ID')}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span>GST (10%)</span>
                   <span className="font-semibold text-gray-900">
-                    ₹ {taxAmount.toLocaleString('en-IN')}
+                    Rp {taxAmount.toLocaleString('id-ID')}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -816,12 +816,12 @@ export default function CheckoutPage() {
                   <span className="font-semibold text-gray-900">
                     {shippingCost === 0
                       ? 'Free'
-                      : `₹ ${shippingCost.toLocaleString('en-IN')}`}
+                      : `Rp ${shippingCost.toLocaleString('id-ID')}`}
                   </span>
                 </div>
                 <div className="flex justify-between items-center text-lg font-bold text-gray-900">
                   <span>Total Due</span>
-                  <span>₹ {orderTotal.toLocaleString('en-IN')}</span>
+                  <span>Rp {orderTotal.toLocaleString('id-ID')}</span>
                 </div>
               </div>
 

@@ -157,7 +157,7 @@ export default function ProductDetailSheet({ product }: ProductDetailSheetProps)
         <div>
           <div className="flex items-center gap-2 mb-2">
             <span className="text-3xl font-bold text-gray-900">
-              ₹ {currentVariant.price.toLocaleString('en-IN')}
+              Rp {currentVariant.price.toLocaleString('id-ID')}
             </span>
             <div className="flex items-center gap-1">
               {[...Array(5)].map((_, i) => (
@@ -204,7 +204,7 @@ export default function ProductDetailSheet({ product }: ProductDetailSheetProps)
                       {variant.name}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-600">₹ {variant.price.toLocaleString('en-IN')}</p>
+                  <p className="text-xs text-gray-600">Rp {variant.price.toLocaleString('id-ID')}</p>
                   <p className="text-xs text-gray-500 mt-1">{variant.description}</p>
                 </button>
               );
@@ -219,7 +219,7 @@ export default function ProductDetailSheet({ product }: ProductDetailSheetProps)
             <span className="text-sm text-gray-700">Arrange in Glass Vase</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-gray-900">₹ 200</span>
+            <span className="text-sm font-semibold text-gray-900">Rp 200.000</span>
             <label className="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" className="sr-only peer" />
               <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
@@ -421,7 +421,7 @@ export default function ProductDetailSheet({ product }: ProductDetailSheetProps)
                 )}
                 {relatedProduct.originalPrice && (
                   <div className="absolute top-3 right-3 bg-emerald-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
-                    Save ₹ {(relatedProduct.originalPrice - relatedProduct.price).toLocaleString('en-IN')}
+                    Save Rp {(relatedProduct.originalPrice - relatedProduct.price).toLocaleString('id-ID')}
                   </div>
                 )}
               </div>
@@ -445,11 +445,11 @@ export default function ProductDetailSheet({ product }: ProductDetailSheetProps)
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-lg font-bold text-gray-900">
-                    ₹ {relatedProduct.price.toLocaleString('en-IN')}
+                    Rp {relatedProduct.price.toLocaleString('id-ID')}
                   </span>
                   {relatedProduct.originalPrice && (
                     <span className="text-sm text-gray-400 line-through">
-                      ₹ {relatedProduct.originalPrice.toLocaleString('en-IN')}
+                      Rp {relatedProduct.originalPrice.toLocaleString('id-ID')}
                     </span>
                   )}
                 </div>

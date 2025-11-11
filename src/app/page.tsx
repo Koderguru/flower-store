@@ -40,13 +40,13 @@ export default function Home() {
   const promotionalBanners = [
     {
       title: 'Flowers & Chocolates',
-      subtitle: 'Starting at ₹549',
+      subtitle: 'Mulai Rp 549.000',
       image: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=600&q=80',
       bgColor: 'bg-pink-50',
     },
     {
       title: 'Affordable Range',
-      subtitle: 'Starting at ₹349',
+      subtitle: 'Mulai Rp 349.000',
       image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=600&q=80',
       bgColor: 'bg-blue-50',
     },
@@ -635,8 +635,8 @@ export default function Home() {
                 <div className="p-4">
                   <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">{product.name}</h3>
                   <div className="flex items-center justify-between">
-                    <span className="text-lg font-bold text-gray-900">₹{product.price}</span>
-                    <span className="text-sm text-gray-500 line-through">₹{product.originalPrice}</span>
+                    <span className="text-lg font-bold text-gray-900">Rp {product.price.toLocaleString('id-ID')}</span>
+                    <span className="text-sm text-gray-500 line-through">Rp {product.originalPrice?.toLocaleString('id-ID')}</span>
                   </div>
                 </div>
               </div>
