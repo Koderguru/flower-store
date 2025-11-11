@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { X, Clock } from 'lucide-react';
+import { useCurrency } from '@/context/CurrencyContext';
 
 interface RecentItem {
   id: string;
@@ -15,6 +16,7 @@ interface RecentItem {
 export default function RecentlyViewed() {
   const [recentItems, setRecentItems] = useState<RecentItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const { formatPrice } = useCurrency();
 
   useEffect(() => {
     loadRecentItems();
@@ -93,7 +95,7 @@ export default function RecentlyViewed() {
                         {item.name}
                       </h4>
                       <p className="text-sm font-bold text-gray-900 mt-1">
-                        Rp {item.price.toLocaleString('id-ID')}
+                        {formatPrice(item.price)}
                       </p>
                     </div>
                   </div>

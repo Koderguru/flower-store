@@ -9,11 +9,13 @@ import ProductCard from '@/components/ProductCard';
 import CategoryChip from '@/components/CategoryChip';
 import { products, categories } from '@/data/products';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { useCurrency } from '@/context/CurrencyContext';
 
 export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const { formatPrice } = useCurrency();
 
   const heroRef = useRef<HTMLDivElement>(null);
   const categoriesRef = useRef<HTMLDivElement>(null);
@@ -635,8 +637,12 @@ export default function Home() {
                 <div className="p-4">
                   <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">{product.name}</h3>
                   <div className="flex items-center justify-between">
-                    <span className="text-lg font-bold text-gray-900">Rp {product.price.toLocaleString('id-ID')}</span>
-                    <span className="text-sm text-gray-500 line-through">Rp {product.originalPrice?.toLocaleString('id-ID')}</span>
+                    <span className="text-lg font-bold text-gray-900">{formatPrice(product.price)}</span>
+                    {product.originalPrice && (
+                      <span className="text-sm text-gray-500 line-through">
+                        {formatPrice(product.originalPrice)}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { MapPin, ShoppingCart, Star, Truck, Tag, Info } from 'lucide-react';
 import { Product, products } from '@/data/products';
 import Link from 'next/link';
+import { useCurrency } from '@/context/CurrencyContext';
 
 interface ProductDetailSheetProps {
   product: Product;
@@ -20,6 +21,7 @@ export default function ProductDetailSheet({ product }: ProductDetailSheetProps)
     care: false,
     delivery: false,
   });
+  const { formatPrice } = useCurrency();
 
   const variants = {
     classic: {
@@ -157,7 +159,7 @@ export default function ProductDetailSheet({ product }: ProductDetailSheetProps)
         <div>
           <div className="flex items-center gap-2 mb-2">
             <span className="text-3xl font-bold text-gray-900">
-              Rp {currentVariant.price.toLocaleString('id-ID')}
+              {formatPrice(currentVariant.price)}
             </span>
             <div className="flex items-center gap-1">
               {[...Array(5)].map((_, i) => (
@@ -204,7 +206,7 @@ export default function ProductDetailSheet({ product }: ProductDetailSheetProps)
                       {variant.name}
                     </span>
                   </div>
-                  <p className="text-xs text-gray-600">Rp {variant.price.toLocaleString('id-ID')}</p>
+                  <p className="text-xs text-gray-600">{formatPrice(variant.price)}</p>
                   <p className="text-xs text-gray-500 mt-1">{variant.description}</p>
                 </button>
               );
@@ -219,7 +221,7 @@ export default function ProductDetailSheet({ product }: ProductDetailSheetProps)
             <span className="text-sm text-gray-700">Arrange in Glass Vase</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm font-semibold text-gray-900">Rp 200.000</span>
+            <span className="text-sm font-semibold text-gray-900">{formatPrice(200000)}</span>
             <label className="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" className="sr-only peer" />
               <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
@@ -421,7 +423,7 @@ export default function ProductDetailSheet({ product }: ProductDetailSheetProps)
                 )}
                 {relatedProduct.originalPrice && (
                   <div className="absolute top-3 right-3 bg-emerald-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
-                    Save Rp {(relatedProduct.originalPrice - relatedProduct.price).toLocaleString('id-ID')}
+                    Save {formatPrice(relatedProduct.originalPrice - relatedProduct.price)}
                   </div>
                 )}
               </div>
@@ -445,11 +447,11 @@ export default function ProductDetailSheet({ product }: ProductDetailSheetProps)
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-lg font-bold text-gray-900">
-                    Rp {relatedProduct.price.toLocaleString('id-ID')}
+                    {formatPrice(relatedProduct.price)}
                   </span>
                   {relatedProduct.originalPrice && (
                     <span className="text-sm text-gray-400 line-through">
-                      Rp {relatedProduct.originalPrice.toLocaleString('id-ID')}
+                      {formatPrice(relatedProduct.originalPrice)}
                     </span>
                   )}
                 </div>

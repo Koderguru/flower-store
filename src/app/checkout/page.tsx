@@ -38,14 +38,14 @@ const shippingOptions: Array<{
     id: 'express',
     label: 'Express Delivery',
     description: 'Dispatched within 24 hours',
-    price: 299,
+    price: 75000,
     eta: '1-2 business days',
   },
   {
     id: 'same_day',
     label: 'Same-Day Delivery',
     description: 'Available for metro cities on orders before 3 PM',
-    price: 499,
+    price: 125000,
     eta: 'Today',
   },
 ];
@@ -76,6 +76,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [currentStep, setCurrentStep] = useState<CheckoutStep>(1);
+  const { formatPrice } = useCurrency();
 
   const [shippingDetails, setShippingDetails] = useState({
     firstName: '',
@@ -86,7 +87,7 @@ export default function CheckoutPage() {
     city: '',
     state: '',
     postalCode: '',
-    country: 'India',
+    country: 'Indonesia',
   });
 
   const [shippingMethod, setShippingMethod] = useState<ShippingMethod>('standard');
@@ -452,9 +453,7 @@ export default function CheckoutPage() {
                         <div className="flex items-center justify-between gap-2">
                           <p className="font-semibold text-gray-900">{option.label}</p>
                           <span className="text-sm font-semibold text-emerald-600">
-                            {option.price === 0
-                              ? 'Free'
-                              : `Rp ${option.price.toLocaleString('id-ID')}`}
+                            {option.price === 0 ? 'Free' : formatPrice(option.price)}
                           </span>
                         </div>
                         <p className="text-sm text-gray-500 mt-2">{option.description}</p>
@@ -722,7 +721,7 @@ export default function CheckoutPage() {
                     ) : (
                       <>
                         <CreditCard className="w-5 h-5" />
-                        Pay Rp {orderTotal.toLocaleString('id-ID')}
+                        Pay {formatPrice(orderTotal)}
                       </>
                     )}
                   </button>
@@ -746,7 +745,7 @@ export default function CheckoutPage() {
                 <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
                   <div className="flex items-center gap-2">
                     <Truck className="w-4 h-4 text-emerald-600" />
-                    Free delivery upgrade on orders above Rp 130.000
+                    Free delivery upgrade on orders above {formatPrice(1300000)}
                   </div>
                   <span className="hidden sm:block h-3 w-px bg-gray-200" />
                   <div className="flex items-center gap-2">
@@ -793,7 +792,7 @@ export default function CheckoutPage() {
                       </p>
                     </div>
                     <div className="text-sm font-semibold text-gray-900">
-                      Rp {(item.price * item.quantity).toLocaleString('id-ID')}
+                      {formatPrice(item.price * item.quantity)}
                     </div>
                   </div>
                 ))}
@@ -803,26 +802,24 @@ export default function CheckoutPage() {
                 <div className="flex justify-between">
                   <span>Subtotal</span>
                   <span className="font-semibold text-gray-900">
-                    Rp {subtotal.toLocaleString('id-ID')}
+                    {formatPrice(subtotal)}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span>GST (10%)</span>
                   <span className="font-semibold text-gray-900">
-                    Rp {taxAmount.toLocaleString('id-ID')}
+                    {formatPrice(taxAmount)}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span>Shipping ({selectedShipping?.label ?? 'Standard'})</span>
                   <span className="font-semibold text-gray-900">
-                    {shippingCost === 0
-                      ? 'Free'
-                      : `Rp ${shippingCost.toLocaleString('id-ID')}`}
+                    {shippingCost === 0 ? 'Free' : formatPrice(shippingCost)}
                   </span>
                 </div>
                 <div className="flex justify-between items-center text-lg font-bold text-gray-900">
                   <span>Total Due</span>
-                  <span>Rp {orderTotal.toLocaleString('id-ID')}</span>
+                  <span>{formatPrice(orderTotal)}</span>
                 </div>
               </div>
 
