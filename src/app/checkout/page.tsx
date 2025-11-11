@@ -89,6 +89,18 @@ export default function CheckoutPage() {
     postalCode: '',
     country: 'Indonesia',
   });
+  const [billingSameAsShipping, setBillingSameAsShipping] = useState(true);
+  const [billingDetails, setBillingDetails] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    address: '',
+    city: '',
+    state: '',
+    postalCode: '',
+    country: 'Indonesia',
+  });
 
   const [shippingMethod, setShippingMethod] = useState<ShippingMethod>('standard');
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('card');
@@ -151,6 +163,15 @@ export default function CheckoutPage() {
       setError('Please fill in all shipping details before continuing.');
       return false;
     }
+
+    if (!billingSameAsShipping) {
+      const missingBillingField = Object.entries(billingDetails).find(([, value]) => value.trim() === '');
+      if (missingBillingField) {
+        setError('Please complete your billing details or mark them as same as shipping.');
+        return false;
+      }
+    }
+
     return true;
   };
 
@@ -421,6 +442,133 @@ export default function CheckoutPage() {
                         />
                       </div>
                     </div>
+                  <div className="mt-6 space-y-4">
+                    <label className="flex items-start gap-3">
+                      <input
+                        type="checkbox"
+                        checked={billingSameAsShipping}
+                        onChange={(event) => setBillingSameAsShipping(event.target.checked)}
+                        className="mt-1 h-4 w-4 rounded border-gray-300 text-emerald-600 focus:ring-emerald-500"
+                      />
+                      <span className="text-sm text-gray-700">
+                        Use the same details for billing
+                      </span>
+                    </label>
+
+                    {!billingSameAsShipping && (
+                      <div className="rounded-2xl border border-emerald-100 bg-emerald-50/40 p-4 md:p-6 space-y-4">
+                        <p className="text-sm font-semibold text-emerald-700 uppercase tracking-[0.22em]">
+                          Billing Address
+                        </p>
+                        <div className="grid gap-4 md:grid-cols-2">
+                          <div className="space-y-1.5">
+                            <label className="text-sm font-semibold text-gray-700">First Name</label>
+                            <input
+                              value={billingDetails.firstName}
+                              onChange={(e) =>
+                                setBillingDetails((prev) => ({ ...prev, firstName: e.target.value }))
+                              }
+                              placeholder="Ayu"
+                              className="w-full border border-emerald-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
+                            />
+                          </div>
+                          <div className="space-y-1.5">
+                            <label className="text-sm font-semibold text-gray-700">Last Name</label>
+                            <input
+                              value={billingDetails.lastName}
+                              onChange={(e) =>
+                                setBillingDetails((prev) => ({ ...prev, lastName: e.target.value }))
+                              }
+                              placeholder="Putri"
+                              className="w-full border border-emerald-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
+                            />
+                          </div>
+                          <div className="space-y-1.5">
+                            <label className="text-sm font-semibold text-gray-700">Email Address</label>
+                            <input
+                              type="email"
+                              value={billingDetails.email}
+                              onChange={(e) =>
+                                setBillingDetails((prev) => ({ ...prev, email: e.target.value }))
+                              }
+                              placeholder="ayu@example.com"
+                              className="w-full border border-emerald-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
+                            />
+                          </div>
+                          <div className="space-y-1.5">
+                            <label className="text-sm font-semibold text-gray-700">Phone Number</label>
+                            <input
+                              value={billingDetails.phone}
+                              onChange={(e) =>
+                                setBillingDetails((prev) => ({ ...prev, phone: e.target.value }))
+                              }
+                              placeholder="+62 812-5555-5678"
+                              className="w-full border border-emerald-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
+                            />
+                          </div>
+                        </div>
+                        <div className="space-y-1.5">
+                          <label className="text-sm font-semibold text-gray-700">Billing Address</label>
+                          <input
+                            value={billingDetails.address}
+                            onChange={(e) =>
+                              setBillingDetails((prev) => ({ ...prev, address: e.target.value }))
+                            }
+                            placeholder="Jl. Melati Indah No. 8"
+                            className="w-full border border-emerald-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
+                          />
+                        </div>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <div className="space-y-1.5">
+                            <label className="text-sm font-semibold text-gray-700">City</label>
+                            <input
+                              value={billingDetails.city}
+                              onChange={(e) =>
+                                setBillingDetails((prev) => ({ ...prev, city: e.target.value }))
+                              }
+                              placeholder="Bandung"
+                              className="w-full border border-emerald-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
+                            />
+                          </div>
+                          <div className="space-y-1.5">
+                            <label className="text-sm font-semibold text-gray-700">State / Province</label>
+                            <input
+                              value={billingDetails.state}
+                              onChange={(e) =>
+                                setBillingDetails((prev) => ({ ...prev, state: e.target.value }))
+                              }
+                              placeholder="Jawa Barat"
+                              className="w-full border border-emerald-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
+                            />
+                          </div>
+                        </div>
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <div className="space-y-1.5">
+                            <label className="text-sm font-semibold text-gray-700">Postal Code</label>
+                            <input
+                              value={billingDetails.postalCode}
+                              onChange={(e) =>
+                                setBillingDetails((prev) => ({ ...prev, postalCode: e.target.value }))
+                              }
+                              placeholder="40115"
+                              className="w-full border border-emerald-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
+                            />
+                          </div>
+                          <div className="space-y-1.5">
+                            <label className="text-sm font-semibold text-gray-700">Country</label>
+                            <input
+                              value={billingDetails.country}
+                              onChange={(e) =>
+                                setBillingDetails((prev) => ({ ...prev, country: e.target.value }))
+                              }
+                              placeholder="Indonesia"
+                              className="w-full border border-emerald-200 rounded-xl px-4 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-200 focus:border-emerald-400"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                     <div className="space-y-1.5">
                       <label className="text-sm font-semibold text-gray-700">Order Notes (Optional)</label>
                       <textarea

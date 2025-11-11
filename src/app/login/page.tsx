@@ -133,7 +133,7 @@ export default function LoginPage() {
                       Welcome back
                     </h1>
                     <p className="text-sm text-gray-600 mt-1">
-                      Manage every bouquet from your FLOWERSINDIA dashboard.
+                      Manage every bouquet from your FLOWERSINDONESIA dashboard.
                     </p>
                   </div>
                 </div>
