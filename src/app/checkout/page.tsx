@@ -1002,8 +1002,8 @@ export default function CheckoutPage() {
                     1800-000-0000
                   </a>{' '}
                   or email{' '}
-                  <a href="mailto:care@flowersindia.com" className="font-semibold text-emerald-600">
-                    care@flowersindia.com
+                  <a href="mailto:care@flowersindonesia.com" className="font-semibold text-emerald-600">
+                    care@flowersindonesia.com
                   </a>
                   . We’re available 7 AM – 11 PM IST.
                 </p>
