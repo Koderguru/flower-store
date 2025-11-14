@@ -68,11 +68,12 @@ const generateTrackingSteps = (order: Order): TrackingStep[] => {
         hour: '2-digit',
         minute: '2-digit',
       }),
-      status: 'completed',
+      status: 'completed' as const,
     },
   ];
 
   if (order.status === 'processing') {
+    const preparingStatus: 'completed' | 'current' = hoursSinceOrder > 2 ? 'completed' : 'current';
     return [
       ...baseSteps,
       {
@@ -80,21 +81,21 @@ const generateTrackingSteps = (order: Order): TrackingStep[] => {
         title: 'Karangan Disiapkan',
         description: 'Florist merangkai bunga sesuai pilihan kamu.',
         timestamp: hoursSinceOrder > 2 ? 'Selesai' : 'Sedang dipersiapkan',
-        status: hoursSinceOrder > 2 ? 'completed' : 'current',
+        status: preparingStatus,
       },
       {
         id: 'enroute',
         title: 'Sedang Dikirim',
         description: 'Kurir kami menuju alamat dengan kendaraan berpendingin.',
         timestamp: 'Menunggu',
-        status: 'upcoming',
+        status: 'upcoming' as const,
       },
       {
         id: 'delivered',
         title: 'Terkirim',
         description: 'Serah terima akan dilakukan di depan alamat penerima.',
         timestamp: order.eta,
-        status: 'upcoming',
+        status: 'upcoming' as const,
       },
     ].map((step, index) => ({
       ...step,
@@ -108,7 +109,7 @@ const generateTrackingSteps = (order: Order): TrackingStep[] => {
         ) : (
           <CheckCircle2 className="w-5 h-5" />
         ),
-    }));
+    })) as TrackingStep[];
   } else if (order.status === 'in_transit') {
     return [
       ...baseSteps,
@@ -117,21 +118,21 @@ const generateTrackingSteps = (order: Order): TrackingStep[] => {
         title: 'Karangan Disiapkan',
         description: 'Florist merangkai bunga sesuai pilihan kamu.',
         timestamp: 'Selesai',
-        status: 'completed',
+        status: 'completed' as const,
       },
       {
         id: 'enroute',
         title: 'Sedang Dikirim',
         description: 'Kurir kami menuju alamat dengan kendaraan berpendingin.',
         timestamp: 'Sedang berlangsung',
-        status: 'current',
+        status: 'current' as const,
       },
       {
         id: 'delivered',
         title: 'Terkirim',
         description: 'Serah terima akan dilakukan di depan alamat penerima.',
         timestamp: order.eta,
-        status: 'upcoming',
+        status: 'upcoming' as const,
       },
     ].map((step, index) => ({
       ...step,
@@ -145,7 +146,7 @@ const generateTrackingSteps = (order: Order): TrackingStep[] => {
         ) : (
           <CheckCircle2 className="w-5 h-5" />
         ),
-    }));
+    })) as TrackingStep[];
   } else {
     // delivered
     return [
@@ -155,21 +156,21 @@ const generateTrackingSteps = (order: Order): TrackingStep[] => {
         title: 'Karangan Disiapkan',
         description: 'Florist merangkai bunga sesuai pilihan kamu.',
         timestamp: 'Selesai',
-        status: 'completed',
+        status: 'completed' as const,
       },
       {
         id: 'enroute',
         title: 'Sedang Dikirim',
         description: 'Kurir kami menuju alamat dengan kendaraan berpendingin.',
         timestamp: 'Selesai',
-        status: 'completed',
+        status: 'completed' as const,
       },
       {
         id: 'delivered',
         title: 'Terkirim',
         description: 'Serah terima berhasil dengan konfirmasi OTP.',
         timestamp: order.eta,
-        status: 'completed',
+        status: 'completed' as const,
       },
     ].map((step, index) => ({
       ...step,
@@ -183,7 +184,7 @@ const generateTrackingSteps = (order: Order): TrackingStep[] => {
         ) : (
           <CheckCircle2 className="w-5 h-5" />
         ),
-    }));
+    })) as TrackingStep[];
   }
 };
 
