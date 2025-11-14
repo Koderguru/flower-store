@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import {
   Package,
@@ -194,7 +194,7 @@ const statusBadgeStyles: Record<string, string> = {
   delivered: 'bg-emerald-100 text-emerald-700 border border-emerald-200',
 };
 
-export default function TrackOrderPage() {
+function TrackOrderContent() {
   const searchParams = useSearchParams();
   const urlOrderId = searchParams.get('orderId');
   const [orderId, setOrderId] = useState(urlOrderId || '');
@@ -408,6 +408,27 @@ export default function TrackOrderPage() {
         </section>
       </div>
     </main>
+  );
+}
+
+export default function TrackOrderPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="relative min-h-screen overflow-hidden bg-gradient-to-br from-emerald-50 via-white to-emerald-100/50 py-12 lg:py-16">
+          <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 sm:px-6 lg:px-0">
+            <div className="flex items-center justify-center py-20">
+              <div className="text-center">
+                <Package className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <p className="text-gray-600">Loading tracking information...</p>
+              </div>
+            </div>
+          </div>
+        </main>
+      }
+    >
+      <TrackOrderContent />
+    </Suspense>
   );
 }
 
