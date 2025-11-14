@@ -212,6 +212,13 @@ export default function CheckoutPage() {
     }
   };
 
+  const generateOrderId = () => {
+    const prefix = 'AMT';
+    const randomNum = Math.floor(1000 + Math.random() * 9000);
+    const year = new Date().getFullYear().toString().slice(-2);
+    return `#${prefix}${year}${randomNum}`;
+  };
+
   const handlePlaceOrder = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (currentStep !== 3) {
@@ -227,6 +234,45 @@ export default function CheckoutPage() {
 
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
+    const orderId = generateOrderId();
+    const orderDate = new Date().toISOString();
+
+    const order = {
+      orderId,
+      orderDate,
+      items: cartItems,
+      shippingDetails,
+      billingDetails: billingSameAsShipping ? shippingDetails : billingDetails,
+      shippingMethod,
+      paymentMethod,
+      subtotal,
+      taxAmount,
+      shippingCost,
+      orderTotal,
+      orderNotes,
+      status: 'processing' as const,
+      trackingSteps: [
+        {
+          id: 'placed',
+          title: 'Pesanan Diterima',
+          description: 'Tim kami sudah menerima pesanan dan menghubungi florist.',
+          timestamp: new Date().toLocaleString('id-ID', {
+            day: 'numeric',
+            month: 'long',
+            hour: '2-digit',
+            minute: '2-digit',
+          }),
+          status: 'completed' as const,
+        },
+      ],
+      eta: selectedShipping?.eta || '3-5 business days',
+    };
+
+    // Save order to localStorage
+    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+    orders.unshift(order);
+    localStorage.setItem('orders', JSON.stringify(orders));
+
     setIsSubmitting(false);
     setPaymentSuccess(true);
 
@@ -234,7 +280,7 @@ export default function CheckoutPage() {
     window.dispatchEvent(new Event('cartUpdated'));
 
     setTimeout(() => {
-      router.replace('/');
+      router.push(`/order-confirmation?orderId=${orderId}`);
     }, 2200);
   };
 

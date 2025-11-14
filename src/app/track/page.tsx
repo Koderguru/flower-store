@@ -1,6 +1,7 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import {
   Package,
   Truck,
@@ -20,102 +21,170 @@ type TrackingStep = {
   icon: React.ReactNode;
 };
 
-const mockTrackings: Record<
-  string,
-  {
-    orderId: string;
-    eta: string;
-    recipient: string;
+interface Order {
+  orderId: string;
+  orderDate: string;
+  items: Array<{
+    id: string;
+    name: string;
+    price: number;
+    quantity: number;
+    image?: string;
+    variant?: string;
+  }>;
+  shippingDetails: {
+    firstName: string;
+    lastName: string;
     address: string;
-    contact: string;
-    status: 'processing' | 'in_transit' | 'delivered';
-    steps: TrackingStep[];
-  }
-> = {
-  '#AMT2301': {
-    orderId: '#AMT2301',
-    eta: 'Hari ini, 18.30 – 19.00 WIB',
-    recipient: 'Ayu Putri',
-    address: 'Jl. Senopati No. 17, Kebayoran Baru, Jakarta Selatan',
-    contact: '+62 812-3456-7890',
-    status: 'in_transit',
-    steps: [
-      {
-        id: 'placed',
-        title: 'Pesanan Diterima',
-        description: 'Tim kami sudah menerima pesanan dan menghubungi florist.',
-        timestamp: 'Hari ini • 11.15',
-        status: 'completed',
-        icon: <Package className="w-5 h-5" />,
-      },
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+    phone: string;
+    email: string;
+  };
+  shippingMethod: string;
+  paymentMethod: string;
+  orderTotal: number;
+  status: 'processing' | 'in_transit' | 'delivered';
+  trackingSteps?: TrackingStep[];
+  eta: string;
+}
+
+// Mock tracking steps generator based on order status
+const generateTrackingSteps = (order: Order): TrackingStep[] => {
+  const orderDate = new Date(order.orderDate);
+  const now = new Date();
+  const hoursSinceOrder = (now.getTime() - orderDate.getTime()) / (1000 * 60 * 60);
+
+  const baseSteps: Omit<TrackingStep, 'icon'>[] = [
+    {
+      id: 'placed',
+      title: 'Pesanan Diterima',
+      description: 'Tim kami sudah menerima pesanan dan menghubungi florist.',
+      timestamp: orderDate.toLocaleString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
+      status: 'completed',
+    },
+  ];
+
+  if (order.status === 'processing') {
+    return [
+      ...baseSteps,
       {
         id: 'preparing',
         title: 'Karangan Disiapkan',
         description: 'Florist merangkai bunga sesuai pilihan kamu.',
-        timestamp: 'Hari ini • 14.40',
-        status: 'completed',
-        icon: <CalendarClock className="w-5 h-5" />,
+        timestamp: hoursSinceOrder > 2 ? 'Selesai' : 'Sedang dipersiapkan',
+        status: hoursSinceOrder > 2 ? 'completed' : 'current',
       },
       {
         id: 'enroute',
         title: 'Sedang Dikirim',
         description: 'Kurir kami menuju alamat dengan kendaraan berpendingin.',
-        timestamp: 'Hari ini • 17.05',
-        status: 'current',
-        icon: <Truck className="w-5 h-5" />,
+        timestamp: 'Menunggu',
+        status: 'upcoming',
       },
       {
         id: 'delivered',
         title: 'Terkirim',
         description: 'Serah terima akan dilakukan di depan alamat penerima.',
-        timestamp: 'Terjadwal • 18.30',
+        timestamp: order.eta,
         status: 'upcoming',
-        icon: <CheckCircle2 className="w-5 h-5" />,
       },
-    ],
-  },
-  '#AMT2294': {
-    orderId: '#AMT2294',
-    eta: 'Terkirim kemarin, 16.10 WIB',
-    recipient: 'Rizky Pratama',
-    address: 'Jl. Braga No. 221, Bandung, Jawa Barat',
-    contact: '+62 811-2233-4455',
-    status: 'delivered',
-    steps: [
-      {
-        id: 'placed',
-        title: 'Pesanan Diterima',
-        description: 'Tim kami sudah menerima pesanan dan menghubungi florist.',
-        timestamp: 'Kemarin • 09.35',
-        status: 'completed',
-        icon: <Package className="w-5 h-5" />,
-      },
+    ].map((step, index) => ({
+      ...step,
+      icon:
+        index === 0 ? (
+          <Package className="w-5 h-5" />
+        ) : index === 1 ? (
+          <CalendarClock className="w-5 h-5" />
+        ) : index === 2 ? (
+          <Truck className="w-5 h-5" />
+        ) : (
+          <CheckCircle2 className="w-5 h-5" />
+        ),
+    }));
+  } else if (order.status === 'in_transit') {
+    return [
+      ...baseSteps,
       {
         id: 'preparing',
         title: 'Karangan Disiapkan',
         description: 'Florist merangkai bunga sesuai pilihan kamu.',
-        timestamp: 'Kemarin • 12.20',
+        timestamp: 'Selesai',
         status: 'completed',
-        icon: <CalendarClock className="w-5 h-5" />,
       },
       {
         id: 'enroute',
         title: 'Sedang Dikirim',
         description: 'Kurir kami menuju alamat dengan kendaraan berpendingin.',
-        timestamp: 'Kemarin • 15.05',
+        timestamp: 'Sedang berlangsung',
+        status: 'current',
+      },
+      {
+        id: 'delivered',
+        title: 'Terkirim',
+        description: 'Serah terima akan dilakukan di depan alamat penerima.',
+        timestamp: order.eta,
+        status: 'upcoming',
+      },
+    ].map((step, index) => ({
+      ...step,
+      icon:
+        index === 0 ? (
+          <Package className="w-5 h-5" />
+        ) : index === 1 ? (
+          <CalendarClock className="w-5 h-5" />
+        ) : index === 2 ? (
+          <Truck className="w-5 h-5" />
+        ) : (
+          <CheckCircle2 className="w-5 h-5" />
+        ),
+    }));
+  } else {
+    // delivered
+    return [
+      ...baseSteps,
+      {
+        id: 'preparing',
+        title: 'Karangan Disiapkan',
+        description: 'Florist merangkai bunga sesuai pilihan kamu.',
+        timestamp: 'Selesai',
         status: 'completed',
-        icon: <Truck className="w-5 h-5" />,
+      },
+      {
+        id: 'enroute',
+        title: 'Sedang Dikirim',
+        description: 'Kurir kami menuju alamat dengan kendaraan berpendingin.',
+        timestamp: 'Selesai',
+        status: 'completed',
       },
       {
         id: 'delivered',
         title: 'Terkirim',
         description: 'Serah terima berhasil dengan konfirmasi OTP.',
-        timestamp: 'Kemarin • 16.10',
+        timestamp: order.eta,
         status: 'completed',
-        icon: <CheckCircle2 className="w-5 h-5" />,
       },
-    ],
-  },
+    ].map((step, index) => ({
+      ...step,
+      icon:
+        index === 0 ? (
+          <Package className="w-5 h-5" />
+        ) : index === 1 ? (
+          <CalendarClock className="w-5 h-5" />
+        ) : index === 2 ? (
+          <Truck className="w-5 h-5" />
+        ) : (
+          <CheckCircle2 className="w-5 h-5" />
+        ),
+    }));
+  }
 };
 
 const statusBadgeStyles: Record<string, string> = {
@@ -125,9 +194,45 @@ const statusBadgeStyles: Record<string, string> = {
 };
 
 export default function TrackOrderPage() {
-  const [orderId, setOrderId] = useState('#AMT2301');
-  const normalizedId = orderId.trim().toUpperCase();
-  const tracking = mockTrackings[normalizedId];
+  const searchParams = useSearchParams();
+  const urlOrderId = searchParams.get('orderId');
+  const [orderId, setOrderId] = useState(urlOrderId || '');
+  const [order, setOrder] = useState<Order | null>(null);
+
+  useEffect(() => {
+    if (urlOrderId) {
+      setOrderId(urlOrderId);
+      loadOrder(urlOrderId);
+    }
+  }, [urlOrderId]);
+
+  const loadOrder = (id: string) => {
+    const normalizedId = id.trim().toUpperCase();
+    const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+    const foundOrder = orders.find((o: Order) => o.orderId.toUpperCase() === normalizedId);
+    if (foundOrder) {
+      setOrder(foundOrder);
+    } else {
+      setOrder(null);
+    }
+  };
+
+  const handleSearch = (id: string) => {
+    const normalizedId = id.trim().toUpperCase();
+    loadOrder(normalizedId);
+  };
+
+  const tracking = order
+    ? {
+        orderId: order.orderId,
+        eta: order.eta,
+        recipient: `${order.shippingDetails.firstName} ${order.shippingDetails.lastName}`,
+        address: `${order.shippingDetails.address}, ${order.shippingDetails.city}, ${order.shippingDetails.state} ${order.shippingDetails.postalCode}`,
+        contact: order.shippingDetails.phone,
+        status: order.status,
+        steps: order.trackingSteps || generateTrackingSteps(order),
+      }
+    : null;
 
   const activeStepIndex = useMemo(() => {
     if (!tracking) return -1;
@@ -148,7 +253,7 @@ export default function TrackOrderPage() {
               className="flex flex-col gap-4 rounded-2xl border border-emerald-100/70 bg-white/70 px-5 py-5 shadow-sm shadow-emerald-100/50 sm:flex-row sm:items-end sm:gap-5"
               onSubmit={(event) => {
                 event.preventDefault();
-                setOrderId(orderId.trim());
+                handleSearch(orderId);
               }}
             >
               <div className="flex-1">

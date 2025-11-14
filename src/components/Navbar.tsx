@@ -225,6 +225,15 @@ export default function Navbar() {
               <span className="text-sm font-medium text-gray-900">Track Order</span>
             </Link>
 
+            {/* Order History */}
+            <Link
+              href="/orders"
+              className="hidden lg:flex items-center gap-2 px-4 py-2 hover:bg-gray-50 rounded-lg transition-colors"
+            >
+              <Package className="w-5 h-5 text-gray-700" />
+              <span className="text-sm font-medium text-gray-900">Orders</span>
+            </Link>
+
             {/* Currency Selector */}
             <div className="hidden lg:flex items-center gap-2 border border-gray-200 rounded-lg px-3 py-2 bg-white/80">
               <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">Currency</span>
@@ -380,6 +389,13 @@ export default function Navbar() {
             onClick={() => setIsMenuOpen(false)}
           >
             Track Order
+          </Link>
+          <Link
+            href="/orders"
+            className="block px-4 py-3 rounded-lg hover:bg-emerald-50 text-gray-700 font-medium"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Order History
           </Link>
           <div className="px-4 py-3 rounded-lg border border-gray-200 bg-gray-50">
             <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">Currency</span>
